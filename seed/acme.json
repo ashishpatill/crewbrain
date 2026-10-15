@@ -1,0 +1,167 @@
+{
+  "tenant": { "id": "acme", "name": "Acme Learning", "kind": "demo", "graph": "t_acme" },
+  "people": [
+    { "id": "asha", "name": "Asha", "role": "Founder", "handle": "@asha" },
+    { "id": "ravi", "name": "Ravi", "role": "Backend lead", "handle": "@ravi" },
+    { "id": "meera", "name": "Meera", "role": "Design", "handle": "@meera" },
+    { "id": "karan", "name": "Karan", "role": "Growth", "handle": "@karan" },
+    { "id": "zoya", "name": "Zoya", "role": "Finance", "handle": "@zoya" }
+  ],
+  "teams": [
+    { "id": "platform", "name": "Platform", "members": ["ravi"], "owns": ["video-lessons", "billing"] },
+    { "id": "product", "name": "Product", "members": ["asha", "meera"], "owns": ["mobile-app"] },
+    { "id": "growth", "name": "Growth", "members": ["karan", "zoya"], "owns": ["launch"] }
+  ],
+  "projects": [
+    { "id": "video-lessons", "name": "Video Lessons", "status": "active", "owner": "ravi", "uses": ["backblaze-b2", "mux", "cloudflare", "neon"] },
+    { "id": "billing", "name": "Billing", "status": "active", "owner": "zoya", "uses": ["dodo", "neon"] },
+    { "id": "mobile-app", "name": "Mobile App", "status": "beta", "owner": "meera", "uses": ["expo", "mux"] },
+    { "id": "launch", "name": "Launch", "status": "active", "owner": "karan", "uses": ["posthog", "resend", "vercel"] }
+  ],
+  "agents": [
+    { "id": "scribe", "name": "scribe", "role": "Ingests docs and chats", "host": "CLI", "model": "groq/gpt-oss-20b", "operator": "asha", "projects": ["video-lessons", "billing", "mobile-app", "launch"] },
+    { "id": "researcher", "name": "researcher", "role": "Reads docs, writes findings with sources", "host": "Grok Build", "model": "groq/gpt-oss-20b", "operator": "ravi", "projects": ["video-lessons"] },
+    { "id": "coder", "name": "coder", "role": "Implements tickets, opens PRs", "host": "Cursor", "model": "groq/gpt-oss-20b", "operator": "ravi", "projects": ["video-lessons", "billing"] },
+    { "id": "reviewer", "name": "reviewer", "role": "Reviews PRs against tickets and decisions", "host": "CLI", "model": "groq/gpt-oss-120b", "operator": "ravi", "projects": ["video-lessons", "billing"] }
+  ],
+  "entities": [
+    { "id": "neon", "name": "Neon", "kind": "vendor", "aliases": ["neon postgres", "neon", "postgres", "postgresql"], "owner": "ravi" },
+    { "id": "planetscale", "name": "PlanetScale", "kind": "vendor", "aliases": ["planetscale"] },
+    { "id": "vercel", "name": "Vercel", "kind": "vendor", "aliases": ["vercel"] },
+    { "id": "netlify", "name": "Netlify", "kind": "vendor", "aliases": ["netlify"] },
+    { "id": "mux", "name": "Mux", "kind": "vendor", "aliases": ["mux"] },
+    { "id": "ffmpeg", "name": "Self-hosted ffmpeg", "kind": "tech", "aliases": ["self-hosted ffmpeg", "ffmpeg"] },
+    { "id": "backblaze-b2", "name": "Backblaze B2", "kind": "vendor", "aliases": ["backblaze b2", "backblaze", "b2"], "owner": "ravi" },
+    { "id": "aws-s3", "name": "AWS S3", "kind": "vendor", "aliases": ["aws s3", "amazon s3", "s3"] },
+    { "id": "cloudflare", "name": "Cloudflare", "kind": "vendor", "aliases": ["cloudflare cdn", "cloudflare"] },
+    { "id": "cloudflare-r2", "name": "Cloudflare R2", "kind": "vendor", "aliases": ["cloudflare r2", "r2"] },
+    { "id": "dodo", "name": "Dodo Payments", "kind": "vendor", "aliases": ["dodo payments", "dodo"], "owner": "zoya" },
+    { "id": "stripe", "name": "Stripe", "kind": "vendor", "aliases": ["stripe"] },
+    { "id": "expo", "name": "React Native with Expo", "kind": "tech", "aliases": ["react native with expo", "react native", "expo"], "owner": "meera" },
+    { "id": "flutter", "name": "Flutter", "kind": "tech", "aliases": ["flutter"] },
+    { "id": "posthog", "name": "PostHog", "kind": "vendor", "aliases": ["posthog"], "owner": "karan" },
+    { "id": "mixpanel", "name": "Mixpanel", "kind": "vendor", "aliases": ["mixpanel"] },
+    { "id": "mongodb", "name": "MongoDB", "kind": "tech", "aliases": ["mongodb atlas", "mongodb", "mongo"] },
+    { "id": "resend", "name": "Resend", "kind": "vendor", "aliases": ["resend"] },
+    { "id": "upi", "name": "UPI", "kind": "concept", "aliases": ["upi"] }
+  ],
+  "decisions": [
+    {
+      "id": "D-01", "title": "Primary database is Neon Postgres",
+      "statement": "Neon Postgres is the primary relational database. PlanetScale was rejected.",
+      "decided_at": "2026-06-09T12:00:00+05:30", "about": ["neon"], "project": "billing",
+      "chose": ["neon"], "rejected": [{ "entity": "planetscale", "reason": "no free plan, costs money from day one" }],
+      "decided_by": "ravi", "approved_by": null, "recorded_in": ["S-02", "S-03"],
+      "reasons": [
+        { "id": "R-01-1", "kind": "other", "text": "Our data is relational", "passages": ["P-02-0", "P-03-1"] },
+        { "id": "R-01-2", "kind": "cost", "text": "Neon has a free plan; PlanetScale dropped its hobby plan", "passages": ["P-02-1", "P-02-2"] },
+        { "id": "R-01-3", "kind": "speed", "text": "Database branching per pull request makes migrations safe", "passages": ["P-02-1", "P-03-1"] }
+      ]
+    },
+    {
+      "id": "D-02", "title": "Web hosting on Vercel",
+      "statement": "The Next.js web app is hosted on Vercel. Netlify was rejected.",
+      "decided_at": "2026-06-11T16:05:00+05:30", "about": ["vercel"], "project": "launch",
+      "chose": ["vercel"], "rejected": [{ "entity": "netlify", "reason": "slower preview builds" }],
+      "decided_by": "ravi", "approved_by": null, "recorded_in": ["S-04"],
+      "reasons": [
+        { "id": "R-02-1", "kind": "speed", "text": "Preview deployments per branch for design review", "passages": ["P-04-1"] },
+        { "id": "R-02-2", "kind": "cost", "text": "Hobby plan is free to start", "passages": ["P-04-2"] }
+      ]
+    },
+    {
+      "id": "D-03", "title": "Mux for video encoding and playback",
+      "statement": "Mux handles encoding, adaptive HLS playback and viewer analytics. Self-hosted ffmpeg workers were rejected.",
+      "decided_at": "2026-07-03T15:00:00+05:30", "about": ["mux"], "project": "video-lessons",
+      "chose": ["mux"], "rejected": [{ "entity": "ffmpeg", "reason": "weeks of work on queues, retries and a player" }],
+      "decided_by": "ravi", "approved_by": "asha", "recorded_in": ["S-06", "S-07"],
+      "reasons": [
+        { "id": "R-03-1", "kind": "speed", "text": "Saves several weeks of building queues and an adaptive player", "passages": ["P-06-0", "P-07-1", "P-06-2"] },
+        { "id": "R-03-2", "kind": "other", "text": "Adaptive HLS playback out of the box", "passages": ["P-06-1", "P-07-1"] },
+        { "id": "R-03-3", "kind": "other", "text": "Built-in viewer analytics", "passages": ["P-06-1", "P-07-0"] }
+      ]
+    },
+    {
+      "id": "D-04", "title": "Dodo Payments as merchant of record",
+      "statement": "Billing uses Dodo Payments as merchant of record. Stripe was rejected for now.",
+      "decided_at": "2026-07-15T14:20:00+05:30", "about": ["dodo"], "project": "billing",
+      "chose": ["dodo"], "rejected": [{ "entity": "stripe", "reason": "we would handle GST and foreign VAT ourselves; invite flow for international payments" }],
+      "decided_by": "zoya", "approved_by": "asha", "recorded_in": ["S-13", "S-14"],
+      "reasons": [
+        { "id": "R-04-1", "kind": "compliance", "text": "Merchant of record collects and files GST and international sales tax", "passages": ["P-13-1", "P-14-1", "P-13-0"] },
+        { "id": "R-04-2", "kind": "other", "text": "UPI at checkout for Indian students", "passages": ["P-13-2", "P-14-1"] },
+        { "id": "R-04-3", "kind": "speed", "text": "Onboarding in days, not weeks", "passages": ["P-13-1", "P-14-1"] }
+      ]
+    },
+    {
+      "id": "D-05", "title": "React Native with Expo for the Mobile App",
+      "statement": "The Mobile App uses React Native with Expo. Flutter was rejected.",
+      "decided_at": "2026-07-22T17:00:00+05:30", "about": ["expo"], "project": "mobile-app",
+      "chose": ["expo"], "rejected": [{ "entity": "flutter", "reason": "second language and duplicated models" }],
+      "decided_by": "meera", "approved_by": "asha", "recorded_in": ["S-15", "S-30"],
+      "reasons": [
+        { "id": "R-05-1", "kind": "speed", "text": "Shares the TypeScript API client and validation code with the web app", "passages": ["P-15-1", "P-30-1", "P-29-0"] },
+        { "id": "R-05-2", "kind": "risk", "text": "Over-the-air updates fix the lesson player without store review", "passages": ["P-15-2", "P-30-1"] },
+        { "id": "R-05-3", "kind": "other", "text": "One team, one language; Flutter's smoother rendering did not justify a second codebase", "passages": ["P-15-3", "P-30-1"] }
+      ]
+    },
+    {
+      "id": "D-06", "title": "PostHog for product analytics",
+      "statement": "Product analytics, session replay and feature flags use PostHog. Mixpanel was rejected.",
+      "decided_at": "2026-08-20T13:00:00+05:30", "about": ["posthog"], "project": "launch",
+      "chose": ["posthog"], "rejected": [{ "entity": "mixpanel", "reason": "smaller free tier, no session replay" }],
+      "decided_by": "karan", "approved_by": "asha", "recorded_in": ["S-16", "S-17"],
+      "reasons": [
+        { "id": "R-06-1", "kind": "cost", "text": "Free tier covers 1M events a month", "passages": ["P-16-1", "P-17-1"] },
+        { "id": "R-06-2", "kind": "other", "text": "Session replay included", "passages": ["P-16-2", "P-17-1"] },
+        { "id": "R-06-3", "kind": "cost", "text": "Feature flags included, so no separate flags vendor", "passages": ["P-16-2", "P-17-1"] }
+      ]
+    },
+    {
+      "id": "D-07", "title": "Video storage on Backblaze B2",
+      "statement": "Original lesson videos are stored in the Backblaze B2 bucket lessons-prod; Neon keeps only metadata and object keys. Neon large objects and AWS S3 were rejected.",
+      "decided_at": "2026-08-12T10:02:00+05:30", "about": ["backblaze-b2", "neon"], "project": "video-lessons",
+      "chose": ["backblaze-b2"],
+      "rejected": [
+        { "entity": "neon", "reason": "video bytes would exceed the 0.5 GB free plan on day one" },
+        { "entity": "aws-s3", "reason": "about 4x the storage price plus paid egress" }
+      ],
+      "decided_by": "ravi", "approved_by": "asha", "recorded_in": ["S-11", "S-10"],
+      "reasons": [
+        { "id": "R-07-1", "kind": "cost", "text": "B2 storage costs about $6 per TB a month, roughly a quarter of S3's $23", "passages": ["P-11-1", "P-09-1", "P-10-0"] },
+        { "id": "R-07-2", "kind": "cost", "text": "Egress from B2 through Cloudflare is free under the Bandwidth Alliance", "passages": ["P-11-2", "P-10-2", "P-18-0", "P-09-2"] },
+        { "id": "R-07-3", "kind": "risk", "text": "Keeping videos out of Neon keeps the database inside its 0.5 GB free plan", "passages": ["P-11-3", "P-10-1", "P-03-2", "P-09-3"] }
+      ]
+    },
+    {
+      "id": "D-08", "title": "Cloudflare as CDN in front of B2",
+      "statement": "Cloudflare's free plan is the CDN in front of the B2 bucket.",
+      "decided_at": "2026-08-12T15:30:00+05:30", "about": ["cloudflare", "backblaze-b2"], "project": "video-lessons",
+      "chose": ["cloudflare"], "rejected": [],
+      "decided_by": "ravi", "approved_by": null, "recorded_in": ["S-18"],
+      "reasons": [
+        { "id": "R-08-1", "kind": "cost", "text": "Free plan, and it makes B2 egress free", "passages": ["P-18-0"] }
+      ]
+    },
+    {
+      "id": "D-09", "title": "Resend for launch emails",
+      "statement": "Launch emails go through Resend's free tier, to be revisited after launch.",
+      "decided_at": "2026-09-24T15:00:00+05:30", "about": ["resend"], "project": "launch",
+      "chose": ["resend"], "rejected": [],
+      "decided_by": "karan", "approved_by": "asha", "recorded_in": ["S-32"],
+      "reasons": [
+        { "id": "R-09-1", "kind": "cost", "text": "3,000 free emails a month is enough before launch", "passages": ["P-32-0", "P-32-1"] }
+      ]
+    },
+    {
+      "id": "D-10", "title": "Course search on Postgres full-text",
+      "statement": "Course search uses Postgres full-text search inside Neon, with no extra search service.",
+      "decided_at": "2026-09-29T11:00:00+05:30", "about": ["neon"], "project": "launch",
+      "chose": ["neon"], "rejected": [],
+      "decided_by": "ravi", "approved_by": null, "recorded_in": ["S-34"],
+      "reasons": [
+        { "id": "R-10-1", "kind": "other", "text": "Small dataset, no extra service to run", "passages": ["P-34-0", "P-34-1"] }
+      ]
+    }
+  ]
+}
