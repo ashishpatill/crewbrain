@@ -90,7 +90,7 @@ export function findMentions(text: string, entities: Entity[]): string[] {
 export interface SeedReport { graph: string; sources: number; passages: number; decisions: number; reasons: number; mentions: number }
 
 /** Idempotent seed: every write is a MERGE on id. `reset` drops the graph first. */
-export async function seedTenant(seed: TenantSeed, corpus: SeedSource[], opts: { reset?: boolean; graphKey?: string } = {}): Promise<SeedReport> {
+export async function seedTenant(seed: TenantSeed, corpus: SeedSource[], opts: { reset?: boolean; graphKey?: string; registryKey?: string } = {}): Promise<SeedReport> {
   const key = opts.graphKey ?? seed.tenant.graph;
   const g = await TenantGraph.open(key);
   if (opts.reset) await g.drop();
@@ -191,7 +191,7 @@ export async function seedTenant(seed: TenantSeed, corpus: SeedSource[], opts: {
   }
 
   // Registry entry lives in its own graph, holding no tenant data.
-  const reg = await TenantGraph.open("t_registry");
+  const reg = await TenantGraph.open(opts.registryKey ?? "t_registry");
   await migrate(reg);
   await reg.query(
     "MERGE (t:Tenant {id: $id}) ON CREATE SET t.created_at = $now SET t.name = $name, t.kind = $kind, t.graph = $graph",
