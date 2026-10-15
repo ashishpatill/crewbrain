@@ -1,6 +1,7 @@
 {
   "name": "crewbrain",
   "private": true,
+  "type": "module",
   "engines": { "node": ">=22" },
   "scripts": {
     "dev": "pnpm --filter @crewbrain/web dev",
