@@ -1,0 +1,23 @@
+{
+  "name": "crewbrain",
+  "private": true,
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "dev": "pnpm --filter @crewbrain/web dev",
+    "build": "pnpm --filter @crewbrain/web build",
+    "migrate": "tsx scripts/migrate.ts",
+    "seed": "tsx scripts/seed.ts",
+    "ask": "tsx scripts/ask.ts",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "vitest": "^3.0.0"
+  },
+  "dependencies": {
+    "@crewbrain/graph": "workspace:*"
+  }
+}
