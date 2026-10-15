@@ -5,3 +5,6 @@ export { migrate, migrations } from "./migrate";
 export * from "./schema";
 export { seedTenant, loadCorpus, parseSource, findMentions } from "./seed";
 export type { TenantSeed, SeedSource, SeedReport } from "./seed";
+export { ask, resolveEntities, contrast, scoreCandidate, validateCitations } from "./trace";
+export type { AskResult, DecisionTrace, Citation } from "./trace";
+export { jaroWinkler } from "./text";
