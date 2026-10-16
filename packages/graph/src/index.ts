@@ -37,3 +37,16 @@ export type {
   ProposalRecord,
   TimelineEvent,
 } from "./memory";
+export { parseMemoryReply } from "./tenant";
+export {
+  createSandbox,
+  listSandboxes,
+  cleanupExpiredSandboxes,
+  graphMemory,
+  sandboxSeed,
+  sandboxSuffix,
+  SandboxCapError,
+  SANDBOX_TTL_MS,
+  SANDBOX_CAP,
+} from "./sandbox";
+export type { SandboxRecord, SandboxOptions } from "./sandbox";
