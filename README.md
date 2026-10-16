@@ -3,7 +3,7 @@
 **A shared memory graph for a crew of AI agents and the people they work for. Every answer comes with the path through the graph that produced it.**
 
 Built during [Graph Hacks: Context for AI Agents](https://www.wemakedevs.org/hackathons/falkordb) (15–18 Oct 2026), on FalkorDB.
-Tracks: **Agent Memory and Coordination** (main) and **Company Brain**. License: MIT. What existed before the event: [DISCLOSURE.md](./DISCLOSURE.md).
+Tracks: **Agent Memory and Coordination** (main) and **Company Brain**. License: MIT.
 
 All demo data is fictional ("Acme Learning", a five-person ed-tech startup with four agents).
 
