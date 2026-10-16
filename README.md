@@ -5,8 +5,6 @@
 Built during [Graph Hacks: Context for AI Agents](https://www.wemakedevs.org/hackathons/falkordb) (15–18 Oct 2026), on FalkorDB.
 Tracks: **Agent Memory and Coordination** (main) and **Company Brain**. License: MIT.
 
-All demo data is fictional ("Acme Learning", a five-person ed-tech startup with four agents).
-
 ## Why
 
 Teams now run several AI agents: a researcher, a coder, a reviewer, an ingest bot. Each one forgets everything between sessions, none of them knows what the others decided, and when one says "we chose Backblaze", nobody can tell where that came from.
