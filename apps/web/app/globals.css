@@ -1,4 +1,57 @@
 @import "tailwindcss";
 
-:root { color-scheme: dark; }
-body { @apply bg-neutral-950 text-neutral-200 font-sans; }
+:root {
+  color-scheme: dark;
+  --accent: #6ee7b7;
+  --accent-dim: #065f46;
+  --panel: #0a0a0a;
+  --border: #262626;
+}
+
+body {
+  @apply bg-neutral-950 text-neutral-200 antialiased;
+  font-family: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+code, .font-mono, pre {
+  font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+a { @apply text-neutral-300 hover:text-white; }
+
+.banner-demo {
+  @apply border-b border-amber-900/60 bg-amber-950/40 px-4 py-1.5 text-center text-xs text-amber-200/90;
+}
+
+.nav-link {
+  @apply block rounded px-3 py-2 text-sm text-neutral-400 hover:bg-neutral-900 hover:text-neutral-100;
+}
+.nav-link[data-active="true"] {
+  @apply bg-neutral-900 text-[var(--accent)];
+}
+
+.panel {
+  @apply rounded-lg border border-neutral-800 bg-neutral-950/80;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center rounded border border-neutral-700 bg-neutral-900 px-3 py-1.5 text-sm text-neutral-100 hover:border-neutral-500 hover:bg-neutral-800 disabled:opacity-40;
+}
+.btn-accent {
+  @apply border-emerald-800 bg-emerald-950 text-emerald-200 hover:border-emerald-600 hover:bg-emerald-900;
+}
+.btn-danger {
+  @apply border-red-900 bg-red-950 text-red-200 hover:border-red-700;
+}
+
+.input {
+  @apply w-full rounded border border-neutral-700 bg-neutral-900 px-3 py-2 text-sm text-neutral-100 placeholder:text-neutral-600 focus:border-emerald-700 focus:outline-none;
+}
+
+.cite {
+  @apply cursor-pointer font-mono text-emerald-400 hover:underline;
+}
+
+.empty {
+  @apply rounded border border-dashed border-neutral-800 p-8 text-center text-sm text-neutral-500;
+}
