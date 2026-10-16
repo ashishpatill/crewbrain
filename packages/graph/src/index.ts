@@ -8,3 +8,32 @@ export type { TenantSeed, SeedSource, SeedReport } from "./seed";
 export { ask, resolveEntities, contrast, scoreCandidate, validateCitations } from "./trace";
 export type { AskResult, DecisionTrace, Citation } from "./trace";
 export { jaroWinkler } from "./text";
+export {
+  remember,
+  supersedeMemory,
+  startEpisode,
+  addTurn,
+  endEpisode,
+  recallMemories,
+  getMemory,
+  createProposal,
+  listProposals,
+  decideProposal,
+  listTimeline,
+  ingestDocument,
+  seedDemoMemories,
+} from "./memory";
+export type {
+  MemoryType,
+  Epistemic,
+  ProposalKind,
+  ProposalStatus,
+  MemoryRecord,
+  EpisodeRecord,
+  DecisionProposalPayload,
+  ProcedureProposalPayload,
+  MemoryProposalPayload,
+  ProposalPayload,
+  ProposalRecord,
+  TimelineEvent,
+} from "./memory";
