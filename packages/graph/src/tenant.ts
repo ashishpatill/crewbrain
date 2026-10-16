@@ -42,8 +42,29 @@ export class TenantGraph {
     if (await this.exists()) await this.graph.delete();
   }
 
+  /** GRAPH.MEMORY USAGE for this graph, parsed into a flat object (values in MB). */
+  async memoryUsage(): Promise<Record<string, number | Record<string, number>>> {
+    const reply = (await this.graph.memoryUsage()) as unknown[];
+    return parseMemoryReply(reply);
+  }
+
   /** Raw graph handle for index/constraint admin, used only by migrations. */
   admin() {
     return this.graph;
   }
+}
+
+/** GRAPH.MEMORY USAGE replies alternate name/value; nested arrays are per-label or per-type maps. */
+export function parseMemoryReply(reply: unknown[]): Record<string, number | Record<string, number>> {
+  const out: Record<string, number | Record<string, number>> = {};
+  for (let i = 0; i + 1 < reply.length; i += 2) {
+    const k = String(reply[i]);
+    const v = reply[i + 1];
+    if (Array.isArray(v)) {
+      const m: Record<string, number> = {};
+      for (let j = 0; j + 1 < v.length; j += 2) m[String(v[j])] = Number(v[j + 1]);
+      out[k] = m;
+    } else out[k] = Number(v);
+  }
+  return out;
 }
