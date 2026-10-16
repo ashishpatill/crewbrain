@@ -46,6 +46,8 @@ export {
   sandboxSeed,
   sandboxSuffix,
   SandboxCapError,
+  UnknownTenantError,
+  resolveTenantKey,
   SANDBOX_TTL_MS,
   SANDBOX_CAP,
 } from "./sandbox";
