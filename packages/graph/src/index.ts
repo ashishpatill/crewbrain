@@ -50,3 +50,21 @@ export {
   SANDBOX_CAP,
 } from "./sandbox";
 export type { SandboxRecord, SandboxOptions } from "./sandbox";
+export {
+  createTask,
+  getTask,
+  listTasks,
+  claimTask,
+  claimNext,
+  startTask,
+  completeTask,
+  handoff,
+  getHandoff,
+  listHandoffs,
+  acceptHandoff,
+  contextCard,
+  runSignedUrlScenario,
+  raceTest,
+  ClaimConflictError,
+} from "./coordination";
+export type { TaskStatus, TaskRecord, HandoffRecord, ContextCard, ScenarioStep, RaceResult } from "./coordination";
