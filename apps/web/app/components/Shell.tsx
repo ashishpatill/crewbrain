@@ -3,12 +3,14 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { MemoryMeter } from "./MemoryMeter";
 
 const NAV = [
   { href: "/ask", label: "Ask" },
   { href: "/timeline", label: "Timeline" },
   { href: "/review", label: "Review" },
   { href: "/ingest", label: "Ingest" },
+  { href: "/sandbox", label: "Sandboxes" },
 ];
 
 export function Shell({ children }: { children: ReactNode }) {
@@ -24,7 +26,8 @@ export function Shell({ children }: { children: ReactNode }) {
         <div className="font-mono text-xs text-neutral-500">
           tenant: <span className="text-neutral-300">acme</span>
         </div>
-        <div className="ml-auto font-mono text-xs text-neutral-500">
+        <div className="ml-auto"><MemoryMeter /></div>
+        <div className="font-mono text-xs text-neutral-500">
           model: <span className="text-neutral-400">graph-only</span>
         </div>
       </header>
