@@ -131,3 +131,27 @@ export async function graphMemory(key: string): Promise<{ graph: string; total_m
   const [e] = await g.ro<{ e: number }>("MATCH ()-[r]->() RETURN count(r) AS e");
   return { graph: key, total_mb: Number(detail.total_graph_sz_mb ?? 0), nodes: n.n, edges: e.e, detail };
 }
+
+export class UnknownTenantError extends Error {
+  constructor(tenant: string) {
+    super(`unknown tenant: ${tenant}`);
+  }
+}
+
+/**
+ * Public tenant allowlist: only "acme" or a sandbox id that is registered and not expired.
+ * Returns the graph key. Anything else (registry, test graphs, made-up names) is refused.
+ */
+export async function resolveTenantKey(tenant?: string | null, opts: SandboxOptions = {}): Promise<string> {
+  const id = (tenant || "acme").toLowerCase().replace(/^t_/, "");
+  if (id === "acme") return "t_acme";
+  if (!/^sbx_[a-z0-9]{8}$/.test(id)) throw new UnknownTenantError(String(tenant));
+  const now = opts.now ?? Date.now();
+  const reg = await registry(opts.registryKey ?? "t_registry");
+  const [hit] = await reg.ro<{ graph: string }>(
+    "MATCH (t:Tenant {id: $id, kind: 'sandbox'}) WHERE t.expires_at > $now RETURN t.graph AS graph",
+    { id, now },
+  );
+  if (!hit || hit.graph !== `t_${id}`) throw new UnknownTenantError(String(tenant));
+  return hit.graph;
+}
