@@ -29,7 +29,7 @@ export default function AgentsPage() {
     <div className="space-y-5">
       <div className="flex items-center gap-3">
         <h1 className="text-lg font-semibold">Agents</h1>
-        <button disabled={busy} onClick={() => act("scenario")} className="rounded bg-emerald-600 px-3 py-1.5 text-sm text-white disabled:opacity-50">Run scenario: signed URLs for R2 videos</button>
+        <button disabled={busy} onClick={() => act("scenario")} className="rounded bg-emerald-600 px-3 py-1.5 text-sm text-white disabled:opacity-50">Run scenario: signed URLs for lookbook videos</button>
         <button disabled={busy} onClick={() => act("race")} className="rounded border border-neutral-700 px-3 py-1.5 text-sm disabled:opacity-50">Race test: 8 agents x 50 tasks</button>
       </div>
       {err && <div className="text-sm text-red-400">{err}</div>}

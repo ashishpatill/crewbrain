@@ -14,7 +14,7 @@ const tenant = flag("--tenant") ?? "acme";
 const asOfRaw = flag("--as-of");
 const question = args.filter((a) => !a.startsWith("--")).join(" ").trim();
 if (!question) {
-  console.error('usage: pnpm ask "Why did we choose Backblaze over Neon storage?" [--tenant acme] [--as-of 2026-08-01] [--json] [--no-store]');
+  console.error('usage: pnpm ask "Why did we choose Amazon S3 over MySQL for media storage?" [--tenant acme] [--as-of 2026-08-01] [--json] [--no-store]');
   process.exit(2);
 }
 

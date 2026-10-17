@@ -7,7 +7,7 @@ Tracks: **Agent Memory and Coordination** (main) and **Company Brain**. License:
 
 ## Why
 
-Teams now run several AI agents: a researcher, a coder, a reviewer, an ingest bot. Each one forgets everything between sessions, none of them knows what the others decided, and when one says "we chose Backblaze", nobody can tell where that came from.
+Teams now run several AI agents: a researcher, a coder, a reviewer, an ingest bot. Each one forgets everything between sessions, none of them knows what the others decided, and when one says "we chose Amazon S3", nobody can tell where that came from.
 
 The questions people ask about this are questions about connections: *why* (decision → reason → source), *who knows* (person → project → system), *what did the reviewer hand the coder* (agent → handoff → task → memory). In a graph each of those is one Cypher query. Crewbrain keeps all of it in FalkorDB.
 
@@ -81,7 +81,7 @@ RETURN t
 
 Zero rows back means another agent won. FalkorDB executes each write query atomically on a graph, so this is a compare-and-set.
 
-**Scenario "Add signed URLs for R2 videos"** (Agents page → Run scenario): `researcher` claims the task, writes two sourced memories and hands off to `coder`. `coder` starts a fresh session; its context card already lists the handoff and the researcher's memories. `coder` hands to `reviewer`, which flags a missing link expiry (citing the researcher's memory) and hands back. `coder` finishes. Every step is nodes and edges in the graph; nothing passes between agents in process memory.
+**Scenario "Add signed URLs for lookbook videos"** (Agents page → Run scenario): `researcher` claims the task, writes two sourced memories and hands off to `coder`. `coder` starts a fresh session; its context card already lists the handoff and the researcher's memories. `coder` hands to `reviewer`, which flags a missing link expiry (citing the researcher's memory) and hands back. `coder` finishes. Every step is nodes and edges in the graph; nothing passes between agents in process memory.
 
 ### Concurrency (measured locally)
 
@@ -95,19 +95,19 @@ Requirements: Node 22+, pnpm, FalkorDB.
 docker compose up -d falkordb          # FalkorDB on :6379, Browser on :3000
 pnpm install
 cp .env.example .env                    # FALKORDB_URL, defaults to redis://localhost:6379
-pnpm migrate && pnpm seed               # schema + Acme demo graph (add --reset to wipe)
-pnpm ask "Why did we choose Backblaze over Neon storage?"
+pnpm migrate && pnpm seed               # schema + Harborlight demo graph (add --reset to wipe)
+pnpm ask "Why did we choose Amazon S3 over MySQL for media storage?"
 pnpm test                               # vitest against a real FalkorDB (throwaway graph keys)
 pnpm dev                                # UI on http://localhost:8080
 ```
 
 ### Demo path
 
-1. **Ask** "Why did we choose Backblaze over Neon storage?" → answer, path list, the Cypher that ran. Ask "Why did we choose MongoDB?" → honest "no recorded decision".
-2. **Ingest** the R2 sample chat → a proposal that partly supersedes the B2 decision. **Review** → approve as Asha.
+1. **Ask** "Why did we choose Amazon S3 over MySQL for media storage?" → answer, path list, the Cypher that ran. Ask "Why did we choose MongoDB?" → honest "no recorded decision".
+2. **Ingest** the signed-URL sample chat → a proposal that partly supersedes the S3 decision. **Review** → approve as Nia.
 3. **Ask** again with *as of* 1 Sep → old answer; now → new answer. **Timeline** shows the change.
 4. **Agents** → Run scenario, then Race test.
-5. **Sandboxes** → New sandbox; the Backblaze question has no answer there (different company).
+5. **Sandboxes** → New sandbox; the Amazon S3 question has no answer there (different company).
 
 ## Deploy (Vercel + FalkorDB Cloud)
 
@@ -121,6 +121,6 @@ pnpm dev                                # UI on http://localhost:8080
 |---|---|
 | `apps/web` | Next.js App Router UI and API routes |
 | `packages/graph` | FalkorDB client, `TenantGraph`, migrations, trace, memory, coordination, sandboxes |
-| `seed/` | Fictional Acme corpus (40 sources), structured decisions, demo R2 chat |
+| `seed/` | Fictional Harborlight corpus (40 sources), structured decisions, demo signed-URL chat |
 | `scripts/` | `migrate`, `seed`, `ask` |
 | `tests/` | vitest suites against a real FalkorDB |

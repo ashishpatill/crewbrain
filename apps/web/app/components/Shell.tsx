@@ -18,7 +18,7 @@ export function Shell({ children }: { children: ReactNode }) {
   const path = usePathname();
   return (
     <div className="flex min-h-screen flex-col">
-      <div className="banner-demo">Demo data · Acme Learning (fictional) · FalkorDB only · graph-only answers (no paid model)</div>
+      <div className="banner-demo">Demo data · Harborlight Outfitters (fictional) · FalkorDB only · graph-only answers (no paid model)</div>
       <header className="flex items-center gap-4 border-b border-neutral-800 px-4 py-2">
         <Link href="/ask" className="flex items-center gap-2 text-sm font-semibold tracking-wide text-neutral-100">
           <span className="inline-block h-2.5 w-2.5 rounded-full bg-emerald-400" aria-hidden />

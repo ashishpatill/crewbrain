@@ -50,12 +50,12 @@ export default function IngestPage() {
     <div className="mx-auto flex max-w-2xl flex-col gap-3">
       <p className="text-sm text-neutral-400">
         Paste a short doc. No LLM: text is chunked into <code>Source</code>/<code>Passage</code> nodes.
-        If it looks like the R2 migration chat, a decision proposal that partly supersedes D-07 is opened for Review.
+        If it looks like the signed-URL chat, a decision proposal that partly supersedes D-07 is opened for Review.
       </p>
 
       <div className="flex flex-wrap gap-2">
         <button type="button" className="btn" onClick={() => void loadSample()}>
-          Load R2 sample chat
+          Load sample chat
         </button>
       </div>
 
@@ -102,7 +102,7 @@ export default function IngestPage() {
               <Link href="/review" className="underline">Review it →</Link>
             </div>
           ) : (
-            <div className="mt-2 text-neutral-500">No decision proposal (text did not match the R2 pattern, or D-07 is already superseded).</div>
+            <div className="mt-2 text-neutral-500">No decision proposal (text did not match the signed-URL pattern, or D-07 is already superseded).</div>
           )}
           <div className="mt-2 font-mono text-[11px] text-neutral-600">{result.passageIds.join(", ")}</div>
         </div>

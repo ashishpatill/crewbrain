@@ -5,7 +5,7 @@ import { openTenant } from "../../../lib/tenant";
 
 export const dynamic = "force-dynamic";
 
-/** Return the hand-written R2 sample chat (no LLM). */
+/** Return the hand-written sample chat (no LLM). */
 export async function GET() {
   try {
     // From apps/web → repo root seed/
@@ -21,7 +21,7 @@ export async function GET() {
       }
     }
     return Response.json({
-      title: meta.title ?? "#infra · move new videos to R2",
+      title: meta.title ?? "#infra · signed URLs for lookbook video",
       kind: meta.kind ?? "chat",
       author: meta.author ?? "ravi",
       created_at: meta.created_at ?? null,

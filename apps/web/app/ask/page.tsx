@@ -47,9 +47,9 @@ type SourceDrawer = {
 };
 
 const EXAMPLES = [
-  "Why did we choose Backblaze over Neon storage?",
+  "Why did we choose Amazon S3 over MySQL for media storage?",
   "Why did we choose MongoDB?",
-  "Why did we pick Dodo Payments instead of Stripe?",
+  "Why did we pick Stripe instead of Adyen?",
 ];
 
 function fmt(ms: number) {

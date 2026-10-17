@@ -14,8 +14,8 @@ type Proposal = {
 };
 
 const ACTORS = [
-  { id: "asha", label: "Asha (founder)" },
-  { id: "ravi", label: "Ravi (backend)" },
+  { id: "nia", label: "Nia (founder)" },
+  { id: "omar", label: "Omar (platform)" },
 ];
 
 function summarize(p: Proposal): string {
@@ -112,7 +112,7 @@ export default function ReviewPage() {
       {error && <div className="rounded border border-red-900 bg-red-950/50 px-3 py-2 text-sm text-red-200">{error}</div>}
       {message && <div className="rounded border border-emerald-900 bg-emerald-950/40 px-3 py-2 text-sm text-emerald-200">{message}</div>}
 
-      {!loading && proposals.length === 0 && <div className="empty">No proposals. Ingest the R2 sample chat to open one.</div>}
+      {!loading && proposals.length === 0 && <div className="empty">No proposals. Ingest the sample chat to open one.</div>}
 
       <ul className="space-y-3">
         {proposals.map((p) => (
