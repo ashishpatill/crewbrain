@@ -32,7 +32,7 @@ describe("sandboxes", () => {
 
   it("isolation: an Acme question abstains in a fresh sandbox but answers in Acme", async () => {
     await seedAcme();
-    const q = "Why did we choose Backblaze over Neon storage?";
+    const q = "Why did we choose Amazon S3 over MySQL for media storage?";
     const inAcme = await ask(await TenantGraph.open(ACME), q, { store: false });
     expect(inAcme.abstained).toBe(false);
     const s = await createSandbox({ registryKey: REG });
@@ -40,7 +40,7 @@ describe("sandboxes", () => {
     const sbx = await TenantGraph.open(s.graph);
     const r = await ask(sbx, q, { store: false });
     expect(r.abstained).toBe(true);
-    const leaked = await sbx.ro<{ n: number }>("MATCH (n) WHERE n.name IN ['Backblaze B2', 'Neon'] OR n.id IN ['backblaze-b2', 'neon', 'D-07'] RETURN count(n) AS n");
+    const leaked = await sbx.ro<{ n: number }>("MATCH (n) WHERE n.name IN ['Amazon S3', 'MySQL'] OR n.id IN ['s3', 'mysql', 'D-07'] RETURN count(n) AS n");
     expect(leaked[0].n).toBe(0);
   });
 

@@ -71,7 +71,7 @@ export interface TenantSeed {
 
 const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
-/** Alias matching, longest alias first, masking matched text so "Cloudflare R2" is not also "Cloudflare". */
+/** Alias matching, longest alias first, masking matched text so "React Native with Expo" is not also "Expo". */
 export function findMentions(text: string, entities: Entity[]): string[] {
   const pairs = entities.flatMap((e) => e.aliases.map((a) => ({ id: e.id, a: a.toLowerCase() })));
   pairs.sort((x, y) => y.a.length - x.a.length);

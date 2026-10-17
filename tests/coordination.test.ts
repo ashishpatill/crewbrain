@@ -19,7 +19,7 @@ afterAll(async () => {
 
 describe("tasks: atomic versioned claim", () => {
   it("first claim wins, a stale-version claim is refused", async () => {
-    const t = await createTask(acme, { title: "claim me", project: "billing" });
+    const t = await createTask(acme, { title: "claim me", project: "orders" });
     expect(t.status).toBe("todo");
     const won = await claimTask(acme, t.id, "coder", t.version);
     expect(won.claimedBy).toBe("coder");
@@ -75,11 +75,11 @@ describe("handoffs carry evidence", () => {
 
 describe("shared memory across agents (scenario)", () => {
   it("coder's fresh context card shows what researcher wrote and handed over", async () => {
-    const t = await createTask(acme, { title: "card check", project: "video-lessons" });
+    const t = await createTask(acme, { title: "card check", project: "storefront" });
     await claimTask(acme, t.id, "researcher", t.version);
     const { memoryId } = await remember(acme, {
       text: "Presigned links should expire within 1 hour.", type: "semantic", sources: ["S-39"],
-      writtenBy: "researcher", scopeProject: "video-lessons",
+      writtenBy: "researcher", scopeProject: "storefront",
     });
     const h = await handoff(acme, { taskId: t.id, from: "researcher", to: "coder", note: "see memory", carries: [memoryId!] });
     const card = await contextCard(acme, "coder");

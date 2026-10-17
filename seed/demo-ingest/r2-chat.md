@@ -1,10 +1,10 @@
 ---
 id: S-demo-r2
 kind: chat
-title: "#infra · move new videos to R2"
-author: ravi
+title: "#infra · signed URLs for lookbook video"
+author: omar
 created_at: 2026-10-14T09:40:00+05:30
 ---
-Ravi: Cloudflare R2 has free egress. Let's move new lesson video uploads to R2 and keep the existing ones on Backblaze B2.
+Omar: Lookbook video is still served on public S3 links, so anyone holding a URL can pass it around forever. Let's switch delivery to CloudFront signed URLs that expire after 1 hour, served from the same Amazon S3 bucket.
 
-Asha: Agreed — incremental only. No big migration this week. Open a decision and I'll approve it.
+Nia: Agreed — delivery only, the originals stay in the bucket where they are. Open a decision and I'll approve it.

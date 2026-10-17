@@ -701,7 +701,7 @@ export async function listTimeline(
 
 /**
  * Ingest a short pasted document without an LLM: chunk into passages, write Source,
- * and if the text looks like the R2 migration chat, open a structured decision proposal
+ * and if the text looks like the signed-URL chat, open a structured decision proposal
  * that partly supersedes D-07.
  */
 export async function ingestDocument(
@@ -785,24 +785,24 @@ export async function ingestDocument(
 
   let proposalId: string | null = null;
   const lower = body.toLowerCase();
-  const looksLikeR2 =
-    lower.includes("r2") &&
-    (lower.includes("egress") || lower.includes("new video") || lower.includes("move new") || lower.includes("cloudflare r2"));
+  const looksLikeSignedUrls =
+    lower.includes("signed") &&
+    (lower.includes("cloudfront") || lower.includes("expire") || lower.includes("public link"));
 
-  if (looksLikeR2) {
-    // Prefer a passage that mentions R2 for citations.
-    const r2Passage =
-      passageIds.find((pid, i) => chunks[i].toLowerCase().includes("r2")) ?? passageIds[0];
+  if (looksLikeSignedUrls) {
+    // Prefer a passage that mentions signed URLs for citations.
+    const signedPassage =
+      passageIds.find((pid, i) => chunks[i].toLowerCase().includes("signed")) ?? passageIds[0];
     const payload: DecisionProposalPayload = {
       kind: "decision",
-      title: "New videos on Cloudflare R2",
+      title: "Signed URLs for lookbook video",
       statement:
-        "New lesson video uploads go to Cloudflare R2 (free egress). Existing videos stay on Backblaze B2.",
-      chose: ["cloudflare-r2"],
+        "Lookbook video is delivered through CloudFront signed URLs that expire after 1 hour. The originals stay in Amazon S3; only delivery changes.",
+      chose: ["cloudfront"],
       rejected: [],
-      about: ["cloudflare-r2", "backblaze-b2"],
-      project: "video-lessons",
-      decided_by: "ravi",
+      about: ["cloudfront", "s3"],
+      project: "storefront",
+      decided_by: "omar",
       approved_by: null,
       supersedes: "D-07",
       partial: true,
@@ -810,13 +810,13 @@ export async function ingestDocument(
       reasons: [
         {
           kind: "cost",
-          text: "R2 has free egress; B2 egress was a recurring cost even behind Cloudflare.",
-          passages: [r2Passage],
+          text: "Signed, expiring links end hotlink-driven bandwidth bills, and CloudFront egress stays a fraction of direct S3 egress.",
+          passages: [signedPassage],
         },
         {
           kind: "other",
-          text: "Keep existing B2 objects in place; only new uploads move, so migration is incremental.",
-          passages: [r2Passage],
+          text: "Only delivery changes; originals stay in the same S3 bucket, so nothing migrates.",
+          passages: [signedPassage],
         },
       ],
     };
@@ -830,7 +830,7 @@ export async function ingestDocument(
   return { sourceId, passageIds, proposalId };
 }
 
-/** Seed a few demo memories onto an already-seeded Acme graph (idempotent by text+type). */
+/** Seed a few demo memories onto an already-seeded demo graph (idempotent by text+type). */
 export async function seedDemoMemories(g: TenantGraph): Promise<string[]> {
   const specs: Array<{
     text: string;
@@ -842,22 +842,22 @@ export async function seedDemoMemories(g: TenantGraph): Promise<string[]> {
     scopeProject?: string;
   }> = [
     {
-      text: "B2 bucket for lesson videos is lessons-prod.",
+      text: "S3 bucket for media originals is media-originals-prod.",
       type: "semantic",
       sources: ["S-11"],
       writtenBy: "scribe",
       validFrom: "2026-08-12T10:05:00+05:30",
-      mentions: ["backblaze-b2"],
-      scopeProject: "video-lessons",
+      mentions: ["s3"],
+      scopeProject: "storefront",
     },
     {
-      text: "Neon free plan storage limit is 0.5 GB; do not put video blobs in Postgres.",
+      text: "MySQL volume is small; do not put media bytes in BLOB columns.",
       type: "semantic",
       sources: ["S-09"],
       writtenBy: "scribe",
       validFrom: "2026-08-12T10:06:00+05:30",
-      mentions: ["neon"],
-      scopeProject: "video-lessons",
+      mentions: ["mysql"],
+      scopeProject: "storefront",
     },
   ];
   const ids: string[] = [];

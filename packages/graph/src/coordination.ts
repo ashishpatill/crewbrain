@@ -252,25 +252,25 @@ export async function runSignedUrlScenario(g: TenantGraph): Promise<{ taskId: st
   const steps: ScenarioStep[] = [];
   const log = (agent: string, action: string, detail: string, ids: string[] = []) => steps.push({ agent, action, detail, ids });
 
-  const task = await createTask(g, { title: "Add signed URLs for R2 videos", project: "video-lessons", priority: 1, createdBy: "ravi" });
-  log("ravi", "create_task", task.title, [task.id]);
+  const task = await createTask(g, { title: "Add signed URLs for lookbook videos", project: "storefront", priority: 1, createdBy: "omar" });
+  log("omar", "create_task", task.title, [task.id]);
 
   // researcher
   const r = await claimTask(g, task.id, "researcher", task.version);
   log("researcher", "claim_task", `claimed at v${r.version}`, [task.id]);
   let ep = await startEpisode(g, { agentId: "researcher" });
-  await addTurn(g, ep, { role: "agent", text: "Reading S-39 and the R2 notes for signed URL options." });
+  await addTurn(g, ep, { role: "agent", text: "Reading S-39 and the CloudFront notes for signed URL options." });
   const m1 = await remember(g, {
-    text: "R2 signed URLs use the S3-compatible presign API; links should expire within 1 hour for lesson videos.",
-    type: "semantic", sources: ["S-39"], writtenBy: "researcher", scopeProject: "video-lessons", mentions: ["cloudflare-r2"],
+    text: "CloudFront signed URLs use a custom policy and an RSA key pair; links should expire within 1 hour for lookbook videos.",
+    type: "semantic", sources: ["S-39"], writtenBy: "researcher", scopeProject: "storefront", mentions: ["cloudfront"],
   });
   const m2 = await remember(g, {
-    text: "Old lesson videos stay on B2; only new uploads go to R2, so the player must handle both hosts.",
-    type: "semantic", sources: ["S-39"], writtenBy: "researcher", scopeProject: "video-lessons", mentions: ["cloudflare-r2", "backblaze-b2"],
+    text: "Current product pages still link the public S3 URLs; only lookbook video moves behind CloudFront signed URLs, so the storefront must serve both during the switch.",
+    type: "semantic", sources: ["S-39"], writtenBy: "researcher", scopeProject: "storefront", mentions: ["cloudfront", "s3"],
   });
   log("researcher", "remember", "2 semantic memories with source S-39", [m1.memoryId!, m2.memoryId!]);
-  await endEpisode(g, ep, { summary: "Researched R2 signed URLs; handed to coder with 2 memories." });
-  const h1 = await handoff(g, { taskId: task.id, from: "researcher", to: "coder", note: "Implement presigned R2 URLs; keep B2 path.", carries: [m1.memoryId!, m2.memoryId!] });
+  await endEpisode(g, ep, { summary: "Researched CloudFront signed URLs; handed to coder with 2 memories." });
+  const h1 = await handoff(g, { taskId: task.id, from: "researcher", to: "coder", note: "Implement CloudFront signed URLs; keep public links until the rollout ends.", carries: [m1.memoryId!, m2.memoryId!] });
   log("researcher", "handoff", "-> coder", [h1.id]);
 
   // coder: fresh session, learns only from the graph
@@ -280,8 +280,8 @@ export async function runSignedUrlScenario(g: TenantGraph): Promise<{ taskId: st
   await acceptHandoff(g, h1.id, "coder");
   await startTask(g, task.id, "coder");
   const m3 = await remember(g, {
-    text: "Implemented signedVideoUrl(key) for R2 and kept the B2 public URL path for old videos.",
-    type: "episodic", writtenBy: "coder", scopeProject: "video-lessons",
+    text: "Implemented signedVideoUrl(key) for CloudFront and kept the public S3 URL path for the current catalogue.",
+    type: "episodic", writtenBy: "coder", scopeProject: "storefront",
   });
   await endEpisode(g, ep, { summary: "Implemented signed URLs; sent to reviewer." });
   const h2 = await handoff(g, { taskId: task.id, from: "coder", to: "reviewer", note: "Please review signedVideoUrl.", carries: [m3.memoryId!, m1.memoryId!] });
@@ -292,7 +292,7 @@ export async function runSignedUrlScenario(g: TenantGraph): Promise<{ taskId: st
   await acceptHandoff(g, h2.id, "reviewer");
   const m4 = await remember(g, {
     text: "Review: signedVideoUrl sets no expiry; researcher's memory says links must expire within 1 hour.",
-    type: "episodic", writtenBy: "reviewer", scopeProject: "video-lessons",
+    type: "episodic", writtenBy: "reviewer", scopeProject: "storefront",
   });
   await endEpisode(g, ep, { summary: "Requested changes: missing expiry." });
   const h3 = await handoff(g, { taskId: task.id, from: "reviewer", to: "coder", note: "Add a 1 hour expiry.", carries: [m4.memoryId!, m1.memoryId!] });

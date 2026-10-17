@@ -19,8 +19,8 @@ describe("Acme corpus", () => {
   });
 
   it("alias matching prefers the longest alias", () => {
-    expect(findMentions("Ravi is reading about Cloudflare R2", seed.entities)).toEqual(["cloudflare-r2"]);
-    expect(findMentions("Neon Postgres and B2", seed.entities).sort()).toEqual(["backblaze-b2", "neon"]);
-    expect(findMentions("export the expo build", seed.entities)).toEqual(["expo"]);
+    expect(findMentions("Omar is reading about React Native with Expo", seed.entities)).toEqual(["react-native"]);
+    expect(findMentions("MySQL and S3", seed.entities).sort()).toEqual(["mysql", "s3"]);
+    expect(findMentions("export the expo build", seed.entities)).toEqual(["react-native"]);
   });
 });

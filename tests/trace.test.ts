@@ -15,11 +15,11 @@ afterAll(async () => {
 });
 
 const SEED_QUESTIONS: Array<{ q: string; decision: string; chose: string; rejected?: string }> = [
-  { q: "Why did we choose Backblaze over Neon storage?", decision: "D-07", chose: "backblaze-b2", rejected: "neon" },
-  { q: "Why did we pick Dodo Payments instead of Stripe?", decision: "D-04", chose: "dodo", rejected: "stripe" },
-  { q: "Why do we use Mux for video?", decision: "D-03", chose: "mux" },
-  { q: "Why React Native with Expo rather than Flutter for the mobile app?", decision: "D-05", chose: "expo", rejected: "flutter" },
-  { q: "Why PostHog over Mixpanel?", decision: "D-06", chose: "posthog", rejected: "mixpanel" },
+  { q: "Why did we choose Amazon S3 over MySQL for media storage?", decision: "D-07", chose: "s3", rejected: "mysql" },
+  { q: "Why did we pick Stripe instead of Adyen?", decision: "D-04", chose: "stripe", rejected: "adyen" },
+  { q: "Why do we use Cloudinary for product media?", decision: "D-03", chose: "cloudinary" },
+  { q: "Why Flutter rather than React Native for the mobile app?", decision: "D-05", chose: "flutter", rejected: "react-native" },
+  { q: "Why Amplitude over Google Analytics 4?", decision: "D-06", chose: "amplitude", rejected: "ga4" },
 ];
 
 /** Re-checks citations straight from FalkorDB, independent of the engine's own validator. */
@@ -51,23 +51,23 @@ describe("trace: seed questions", () => {
   }
 
   it("headline decision carries deciders, rejection reason and three distinct reasons", async () => {
-    const r = await ask(acme, "Why did we choose Backblaze over Neon storage?", { store: false });
+    const r = await ask(acme, "Why did we choose Amazon S3 over MySQL for media storage?", { store: false });
     const d = r.decision!;
-    expect(d.decidedBy.map((p) => p.id)).toEqual(["ravi"]);
-    expect(d.approvedBy.map((p) => p.id)).toEqual(["asha"]);
-    expect(d.rejected.find((x) => x.id === "neon")?.reason).toMatch(/0\.5 GB/);
+    expect(d.decidedBy.map((p) => p.id)).toEqual(["omar"]);
+    expect(d.approvedBy.map((p) => p.id)).toEqual(["nia"]);
+    expect(d.rejected.find((x) => x.id === "mysql")?.reason).toMatch(/BLOB/);
     expect(d.reasons.map((x) => x.id).sort()).toEqual(["R-07-1", "R-07-2", "R-07-3"]);
     expect(new Set(r.citations.map((c) => c.sourceId)).size).toBeGreaterThanOrEqual(3);
   });
 
   it("resolves a misspelt entity with Jaro-Winkler", async () => {
-    const r = await ask(acme, "Why did we choose Backblze over Neon?", { store: false });
+    const r = await ask(acme, "Why did we choose Amazons3 over MySQL?", { store: false });
     expect(r.decision?.id).toBe("D-07");
-    expect(r.entities.find((e) => e.id === "backblaze-b2")?.via).toBe("fuzzy");
+    expect(r.entities.find((e) => e.id === "s3")?.via).toBe("fuzzy");
   });
 
   it("stores the question and answer with CITES edges", async () => {
-    const r = await ask(acme, "Why did we choose Backblaze over Neon storage?");
+    const r = await ask(acme, "Why did we choose Amazon S3 over MySQL for media storage?");
     const rows = await acme.ro<{ n: number }>(
       "MATCH (:Question {id: $q})-[:ANSWERED_BY]->(a:Answer {id: $a})-[:CITES]->(p:Passage) RETURN count(p) AS n",
       { q: r.questionId, a: r.answerId },
@@ -83,11 +83,11 @@ describe("trace: abstain", () => {
     expect(r.decision).toBeNull();
     expect(r.citations).toEqual([]);
     expect(r.answer).toBe("No recorded decision about MongoDB in this graph.");
-    expect(r.closestRelated.map((e) => e.id)).toContain("posthog");
+    expect(r.closestRelated.map((e) => e.id)).toContain("amplitude");
   });
 
-  it("reversed choice abstains instead of returning the B2 decision", async () => {
-    const r = await ask(acme, "Why did we choose Neon over Backblaze?", { store: false });
+  it("reversed choice abstains instead of returning the S3 decision", async () => {
+    const r = await ask(acme, "Why did we choose MySQL over Amazon S3 for media storage?", { store: false });
     expect(r.abstained).toBe(true);
   });
 
@@ -97,7 +97,7 @@ describe("trace: abstain", () => {
   });
 
   it("as of a date before the decision, there is no answer", async () => {
-    const r = await ask(acme, "Why did we choose Backblaze over Neon storage?", { store: false, asOf: Date.parse("2026-08-01T00:00:00+05:30") });
+    const r = await ask(acme, "Why did we choose Amazon S3 over MySQL for media storage?", { store: false, asOf: Date.parse("2026-08-01T00:00:00+05:30") });
     expect(r.abstained).toBe(true);
   });
 });
@@ -120,7 +120,7 @@ describe("tenant isolation", () => {
     await seedSandbox();
     const sbx = await TenantGraph.open(SANDBOX);
 
-    const inSbx = await ask(sbx, "Why did we choose Backblaze over Neon storage?", { store: false });
+    const inSbx = await ask(sbx, "Why did we choose Amazon S3 over MySQL for media storage?", { store: false });
     expect(inSbx.abstained).toBe(true);
     expect(inSbx.entities).toEqual([]);
 
@@ -134,7 +134,7 @@ describe("tenant isolation", () => {
     // Same ids exist in both graphs (D-01, S-01, P-01-0) but hold each tenant's own data.
     const [a] = await acme.ro<{ t: string }>("MATCH (d:Decision {id: 'D-01'}) RETURN d.title AS t");
     const [b] = await sbx.ro<{ t: string }>("MATCH (d:Decision {id: 'D-01'}) RETURN d.title AS t");
-    expect(a.t).toBe("Primary database is Neon Postgres");
+    expect(a.t).toBe("Primary database is MySQL");
     expect(b.t).toBe("Local data in SQLite");
     const leaked = await sbx.ro<{ n: number }>("MATCH (p:Passage) WHERE p.id IN ['P-11-1', 'P-09-1'] RETURN count(p) AS n");
     expect(leaked[0].n).toBe(0);
