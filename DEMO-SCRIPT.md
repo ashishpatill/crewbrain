@@ -18,6 +18,7 @@ Narration honesty line (say or show on screen): "This is the fictional Harborlig
 
 2. INGEST (0:28–0:42) — click Ingest in left nav. HOLD on the result panel until the narration finishes.
    - Click "Load sample chat", then "Ingest → propose".
+   - Ingest now also accepts file upload (.txt/.md/.json/.csv/.log, 512 KB max); PDF/DOCX are not supported yet (no parser). This recording still uses Load sample chat for repeatability.
    - Expected on screen (re-recording, pre-flighted graph): "Wrote S-ing-6ccc with 2 passages. No proposal was opened." That is the correct result — do not wait for or describe a new proposal here.
    - Say: "No LLM. It chunks the chat into Source and Passage nodes. Because this graph is already pre-flighted, re-ingesting is idempotent: it returns the same source, S-ing-6ccc, with its 2 passages instead of duplicating it, and it opens no new proposal — the signed-URL decision proposal this chat originally opened is already approved, and you will see it in Review next."
    - (If recording on a fresh graph instead: the result shows a new source/proposal id — use that proposal in step 3.)

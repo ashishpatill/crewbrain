@@ -8,6 +8,7 @@ import { MemoryMeter } from "./MemoryMeter";
 import { useTenant } from "./tenant";
 
 const NAV = [
+  { href: "/start", label: "Start" },
   { href: "/ask", label: "Ask" },
   { href: "/timeline", label: "Timeline" },
   { href: "/review", label: "Review" },

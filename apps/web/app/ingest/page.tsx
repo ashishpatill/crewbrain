@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useTenant } from "../components/tenant";
+import { SUPPORTED_UPLOAD_EXTS, MAX_UPLOAD_BYTES, validateUploadFile } from "./upload";
 
 export default function IngestPage() {
   const [tenant] = useTenant();
@@ -13,6 +14,7 @@ export default function IngestPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<{ sourceId: string; passageIds: string[]; proposalId: string | null } | null>(null);
+  const [dragOver, setDragOver] = useState(false);
 
   const loadSample = async () => {
     setError(null);
@@ -26,6 +28,35 @@ export default function IngestPage() {
     setKind(data.kind);
     setAuthor(data.author);
     setText(data.text);
+  };
+
+  const handleFile = async (file: File) => {
+    setError(null);
+    const v = validateUploadFile(file.name, file.size);
+    if (!v.ok) {
+      setError(v.error || v.message || "Invalid file");
+      return;
+    }
+    try {
+      const content = await file.text();
+      setTitle(file.name);
+      setText(content);
+    } catch (e) {
+      setError((e as Error).message);
+    }
+  };
+
+  const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (f) void handleFile(f);
+    e.target.value = "";
+  };
+
+  const onDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setDragOver(false);
+    const f = e.dataTransfer.files?.[0];
+    if (f) void handleFile(f);
   };
 
   const submit = async () => {
@@ -60,6 +91,22 @@ export default function IngestPage() {
         <button type="button" className="btn" onClick={() => void loadSample()}>
           Load sample chat
         </button>
+      </div>
+
+      <div
+        onDragOver={(e) => {
+          e.preventDefault();
+          setDragOver(true);
+        }}
+        onDragLeave={() => setDragOver(false)}
+        onDrop={onDrop}
+        className={`rounded border border-dashed p-4 text-sm ${dragOver ? "border-emerald-400 bg-emerald-950/20" : "border-neutral-700"}`}
+      >
+        <div className="mb-2 text-xs text-neutral-500">
+          Upload a file ({SUPPORTED_UPLOAD_EXTS.join(", ")}, max {MAX_UPLOAD_BYTES} bytes). PDF/DOCX are not supported yet (no parser in repo).
+        </div>
+        <input type="file" accept={SUPPORTED_UPLOAD_EXTS.join(",")} onChange={onFileChange} />
+        <div className="mt-1 text-xs text-neutral-600">or drag &amp; drop a file here</div>
       </div>
 
       <div className="grid gap-2 sm:grid-cols-3">

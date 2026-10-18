@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { ingestDocument } from "@crewbrain/graph";
 import { openTenant } from "../../../lib/tenant";
+import { MAX_UPLOAD_BYTES } from "../../ingest/upload";
 
 export const dynamic = "force-dynamic";
 
@@ -38,6 +39,8 @@ export async function POST(req: Request) {
     const text = String(body.text ?? "").trim();
     const title = String(body.title ?? "ingested document").trim();
     if (!text) return Response.json({ error: "text required" }, { status: 400 });
+    const byteLen = new TextEncoder().encode(text).length;
+    if (byteLen > MAX_UPLOAD_BYTES) return Response.json({ error: `text exceeds ${MAX_UPLOAD_BYTES} bytes` }, { status: 413 });
     const g = await openTenant(body.tenant);
     if (!(await g.exists())) return Response.json({ error: `tenant graph missing: ${g.key}` }, { status: 404 });
     const result = await ingestDocument(g, {

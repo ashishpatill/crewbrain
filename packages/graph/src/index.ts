@@ -6,6 +6,8 @@ export * from "./schema";
 export { seedTenant, loadCorpus, parseSource, findMentions } from "./seed";
 export type { TenantSeed, SeedSource, SeedReport } from "./seed";
 export { ask, resolveEntities, contrast, scoreCandidate, validateCitations } from "./trace";
+export { runRequirement } from "./requirement";
+export type { RequirementResult, RequirementStage } from "./requirement";
 export type { AskResult, DecisionTrace, Citation } from "./trace";
 export { jaroWinkler } from "./text";
 export {

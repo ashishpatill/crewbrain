@@ -87,8 +87,22 @@ RETURN o.id AS id, o.name AS name, count(p) AS n ORDER BY n DESC, name LIMIT 5`;
 
 const Q_VALIDATE = `MATCH (p:Passage)-[:PART_OF]->(s:Source) WHERE p.id IN $ids RETURN p.id AS id`;
 
+const Q_PASSAGES = `MATCH (p:Passage)-[:PART_OF]->(s:Source) RETURN p.id AS id, p.text AS text, s.id AS sourceId, s.title AS sourceTitle, s.kind AS sourceKind`;
+
 const escapeRe = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const STOP = new Set(["why", "did", "we", "choose", "chose", "over", "pick", "picked", "instead", "use", "the", "for", "what", "and", "with", "our", "storage", "rather", "than", "decide", "decided"]);
+const GENERIC_Q_WORDS = new Set(["what", "why", "how", "when", "where", "which", "who", "whom", "whose", "does", "do", "did", "is", "are", "was", "were", "will", "would", "could", "should", "can", "tell", "about", "mention", "mentions", "sources", "source", "passages", "passage", "graph", "graphs", "knowledge", "base", "find", "search", "show", "list", "give", "have", "has", "had", "these", "those", "this", "that", "there", "their", "them", "then", "than", "also", "just", "only", "some", "any", "all", "more", "most", "such", "into", "onto", "from", "with", "without"]);
+
+function questionKeywords(q: string): string[] {
+  const words = q.toLowerCase().match(/[a-z0-9]{4,}/g) ?? [];
+  const out = new Set<string>();
+  for (const w of words) {
+    if (STOP.has(w)) continue;
+    if (GENERIC_Q_WORDS.has(w)) continue;
+    out.add(w);
+  }
+  return [...out];
+}
 
 /** Alias match (longest first, masking matches), then Jaro-Winkler >= 0.92 on leftover words. */
 export function resolveEntities(question: string, entities: { id: string; name: string; aliases: string[] }[]): ResolvedEntity[] {
@@ -241,6 +255,39 @@ export async function ask(g: TenantGraph, question: string, opts: { asOf?: numbe
         ? `No recorded decision that chose ${subject} over ${other} in this graph.`
         : `No recorded decision about ${subject} in this graph.`;
     if (ids.length) closestRelated = (await ro<{ id: string; name: string }>(Q_CLOSEST, { ids })).map(({ id, name }) => ({ id, name }));
+
+    if (entities.length === 0) {
+      const allPassages = await ro<{ id: string; text: string; sourceId: string; sourceTitle: string; sourceKind: string }>(Q_PASSAGES);
+      const keywords = questionKeywords(question);
+      if (keywords.length >= 2) {
+        const scored = allPassages
+          .map((p) => {
+            const lower = (p.text ?? "").toLowerCase();
+            const matched = keywords.filter((k) => lower.includes(k));
+            return { p, score: new Set(matched).size };
+          })
+          .filter((x) => x.score >= 2)
+          .sort((a, b) => b.score - a.score || a.p.id.localeCompare(b.p.id));
+        const top = scored.slice(0, 3);
+        if (top.length) {
+          citations = top.map((x, i) => ({
+            n: i + 1,
+            passageId: x.p.id,
+            sourceId: x.p.sourceId,
+            sourceTitle: x.p.sourceTitle,
+            sourceKind: x.p.sourceKind,
+            text: x.p.text,
+          }));
+          for (const c of citations) subgraph.add(c.passageId);
+          const lines: string[] = [];
+          lines.push("No recorded decision matches this question in this graph. However, these passages in the graph's sources mention it:");
+          for (const c of citations) lines.push(`- ${c.text} [${c.n}]`);
+          lines.push("Sources:");
+          for (const c of citations) lines.push(`[${c.n}] ${c.passageId} · ${c.sourceKind} ${c.sourceId} "${c.sourceTitle}"`);
+          answer = lines.join("\n");
+        }
+      }
+    }
   }
   const validation = await validateCitations(g, answer, citations, subgraph, cypher);
   if (validation.invalid.length) throw new Error(`citation validator rejected: ${validation.invalid.join(", ")}`);
