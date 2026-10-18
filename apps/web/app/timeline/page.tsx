@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useTenant } from "../components/tenant";
 
@@ -95,7 +96,11 @@ export default function TimelinePage() {
 
       {error && <div className="rounded border border-red-900 bg-red-950/50 px-3 py-2 text-sm text-red-200">{error}</div>}
 
-      {!loading && events.length === 0 && <div className="empty">No events in this scope.</div>}
+      {!loading && events.length === 0 && (
+        <div className="empty">
+          No events yet. <Link href="/start">Start a run →</Link>
+        </div>
+      )}
 
       <ul className="space-y-2">
         {events.map((e) => (

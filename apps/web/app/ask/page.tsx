@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Suspense, useCallback, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { parseAskPrefill } from "./prefill";
@@ -176,7 +177,9 @@ function AskPageInner() {
       {error && <div className="rounded border border-red-900 bg-red-950/50 px-3 py-2 text-sm text-red-200">{error}</div>}
 
       {!result && !loading && !error && (
-        <div className="empty">Ask a question to see the answer and the FalkorDB path behind it.</div>
+        <div className="empty">
+          Ask a question to see the answer and the FalkorDB path behind it — or <Link href="/start">start a run →</Link>
+        </div>
       )}
 
       {result && (

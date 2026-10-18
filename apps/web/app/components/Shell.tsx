@@ -7,6 +7,9 @@ import { useEffect, useState } from "react";
 import { MemoryMeter } from "./MemoryMeter";
 import { useTenant } from "./tenant";
 
+type RunStage = { key: string; label: string; state: string; detail: string };
+type RunRecord = { id: string; stages: RunStage[]; outcome: string; nextAction: { label: string; href?: string } };
+
 const NAV = [
   { href: "/start", label: "Start" },
   { href: "/ask", label: "Ask" },
@@ -26,6 +29,26 @@ export function Shell({ children }: { children: ReactNode }) {
   const [options, setOptions] = useState<{ value: string; label: string }[]>([
     { value: "acme", label: "acme (Harborlight demo)" },
   ]);
+  const [run, setRun] = useState<RunRecord | null>(null);
+
+  useEffect(() => {
+    let live = true;
+    const load = () => {
+      fetch(`/api/run?tenant=${encodeURIComponent(tenant)}`)
+        .then((r) => (r.ok ? r.json() : Promise.reject()))
+        .then((j) => {
+          if (!live) return;
+          setRun(j.run ?? null);
+        })
+        .catch(() => {
+          if (live) setRun(null);
+        });
+    };
+    load();
+    return () => {
+      live = false;
+    };
+  }, [path, tenant]);
 
   useEffect(() => {
     let live = true;
@@ -67,6 +90,22 @@ export function Shell({ children }: { children: ReactNode }) {
         <div className="hidden sm:block">
           <MemoryMeter tenant={tenant} />
         </div>
+        {run && (() => {
+          const stages = run.stages ?? [];
+          const activeIdx = stages.findIndex((s) => s.state === "stopped" || s.state === "pending");
+          const idx = activeIdx >= 0 ? activeIdx : Math.max(0, stages.length - 1);
+          const stage = stages[idx];
+          const x = stages.length ? idx + 1 : 0;
+          const y = stages.length;
+          return (
+            <Link
+              href={run.id ? `/start?run=${run.id}` : "/start"}
+              className="flex max-w-full items-center gap-1 rounded-lg border border-neutral-700 bg-neutral-900 px-2 py-1 font-mono text-[11px] text-neutral-300 hover:border-neutral-500"
+            >
+              Run · stage {x} of {y} · {stage?.label ?? stage?.key} · {stage?.state ?? run.outcome}
+            </Link>
+          );
+        })()}
         <div className="hidden font-mono text-xs text-neutral-500 sm:block">
           model: <span className="text-neutral-400">graph-only</span>
         </div>

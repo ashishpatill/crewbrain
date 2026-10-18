@@ -120,3 +120,29 @@ a { @apply text-neutral-300 hover:text-white; }
 .btn, .nav-link, .input, .card, a, button {
   @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/50 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950;
 }
+
+/* ---- run timeline (job 6) ---- */
+.run-timeline {
+  min-width: 0;
+}
+.run-stage {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+@keyframes run-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.55); }
+  50% { box-shadow: 0 0 0 6px rgba(52, 211, 153, 0); }
+}
+.run-stage-active {
+  animation: run-pulse 1.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .run-stage-active { animation: none; }
+}
+
+/* mobile: vertical stack, no horizontal overflow */
+@media (max-width: 390px) {
+  .run-timeline { flex-direction: column; }
+  .run-stage { width: 100%; }
+}

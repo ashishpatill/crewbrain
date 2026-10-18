@@ -8,6 +8,22 @@ export type { TenantSeed, SeedSource, SeedReport } from "./seed";
 export { ask, resolveEntities, contrast, scoreCandidate, validateCitations } from "./trace";
 export { runRequirement } from "./requirement";
 export type { RequirementResult, RequirementStage } from "./requirement";
+export {
+  createRun,
+  ingestIntoRun,
+  decideInRun,
+  getRun,
+  getLatestRun,
+  computeNextAction,
+} from "./run";
+export type {
+  RunRecord,
+  RunStage,
+  RunCitation,
+  RunProposalRef,
+  RunTaskRef,
+  RunLike,
+} from "./run";
 export type { AskResult, DecisionTrace, Citation } from "./trace";
 export { jaroWinkler } from "./text";
 export {

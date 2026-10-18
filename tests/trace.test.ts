@@ -163,6 +163,6 @@ describe("migration and seed are idempotent", () => {
     await seedTenant(acmeSeed(), acmeCorpus(), { graphKey: ACME, registryKey: REGISTRY });
     expect(await counts(ACME)).toEqual(before);
     const idx = await acme.ro<{ label: string }>("CALL db.indexes() YIELD label RETURN label");
-    expect(idx.length).toBe(19);
+    expect(idx.length).toBe(20);
   });
 });

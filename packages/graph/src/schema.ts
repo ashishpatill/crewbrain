@@ -2,7 +2,7 @@
 export const NODE_LABELS = [
   "Person", "Team", "Project", "Entity", "Agent", "Source", "Passage", "Decision", "Reason",
   "Memory", "Episode", "Turn", "Procedure", "Task", "Handoff", "Question", "Answer", "Proposal",
-  "Tenant",
+  "Run", "Tenant",
 ] as const;
 
 export type NodeLabel = (typeof NODE_LABELS)[number];

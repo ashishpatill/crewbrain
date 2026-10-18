@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import Link from "next/link";
 import { useTenant } from "../components/tenant";
 
 type Task = { id: string; title: string; status: string; version: number; claimedBy: string | null; assignedTo: string | null };
@@ -70,6 +71,10 @@ export default function AgentsPage() {
       </div>
 
       {err && <div className="text-sm text-red-400">{err}</div>}
+
+      {data.tasks.length === 0 && (
+        <div className="empty">No tasks yet. <Link href="/start">Start a run to create one →</Link></div>
+      )}
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
         {data.agents.map((a) => (

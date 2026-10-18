@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useTenant } from "../components/tenant";
 
@@ -128,7 +129,11 @@ export default function ReviewPage() {
       {error && <div className="rounded-2xl border border-red-900 bg-red-950/50 px-3 py-2 text-sm text-red-200">{error}</div>}
       {message && <div className="rounded-2xl border border-emerald-900 bg-emerald-950/40 px-3 py-2 text-sm text-emerald-200">{message}</div>}
 
-      {!loading && proposals.length === 0 && <div className="empty">No proposals. Ingest the sample chat to open one.</div>}
+      {!loading && proposals.length === 0 && (
+        <div className="empty">
+          No proposals. <Link href="/start">Start a run or ingest a document →</Link>
+        </div>
+      )}
 
       <ul className="space-y-3">
         {proposals.map((p) => (
