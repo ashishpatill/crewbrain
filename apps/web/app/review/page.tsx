@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useTenant } from "../components/tenant";
 
 type Proposal = {
   id: string;
@@ -28,19 +29,23 @@ function summarize(p: Proposal): string {
 }
 
 export default function ReviewPage() {
+  const [tenant] = useTenant();
   const [status, setStatus] = useState<"pending" | "approved" | "rejected" | "all">("pending");
   const [proposals, setProposals] = useState<Proposal[]>([]);
-  const [actor, setActor] = useState("asha");
+  const [actor, setActor] = useState("nia");
   const [loading, setLoading] = useState(false);
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
+  const actors = tenant.startsWith("sbx_") ? [{ id: "you", label: "You (sandbox founder)" }] : ACTORS;
+  const effectiveActor = actors.some((a) => a.id === actor) ? actor : actors[0].id;
+
   const load = useCallback(async () => {
     setLoading(true);
     setError(null);
     try {
-      const params = new URLSearchParams({ tenant: "acme" });
+      const params = new URLSearchParams({ tenant });
       if (status !== "all") params.set("status", status);
       const res = await fetch(`/api/proposals?${params}`);
       const data = await res.json();
@@ -51,7 +56,7 @@ export default function ReviewPage() {
     } finally {
       setLoading(false);
     }
-  }, [status]);
+  }, [status, tenant]);
 
   useEffect(() => {
     void load();
@@ -65,7 +70,7 @@ export default function ReviewPage() {
       const res = await fetch("/api/proposals", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ tenant: "acme", proposalId, actor, action }),
+        body: JSON.stringify({ tenant, proposalId, actor: effectiveActor, action }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || res.statusText);
@@ -96,8 +101,8 @@ export default function ReviewPage() {
         </div>
         <div>
           <label className="mb-1 block text-xs text-neutral-500">Decide as (Person only)</label>
-          <select className="input w-auto" value={actor} onChange={(e) => setActor(e.target.value)}>
-            {ACTORS.map((a) => (
+          <select className="input w-auto" value={effectiveActor} onChange={(e) => setActor(e.target.value)}>
+            {actors.map((a) => (
               <option key={a.id} value={a.id}>{a.label}</option>
             ))}
           </select>

@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { MemoryMeter } from "./MemoryMeter";
+import { useTenant } from "./tenant";
 
 const NAV = [
   { href: "/ask", label: "Ask" },
@@ -14,8 +16,33 @@ const NAV = [
   { href: "/sandbox", label: "Sandboxes" },
 ];
 
+type SandboxOption = { id: string; graph: string };
+
 export function Shell({ children }: { children: ReactNode }) {
   const path = usePathname();
+  const [tenant, setTenant] = useTenant();
+  const [options, setOptions] = useState<{ value: string; label: string }[]>([
+    { value: "acme", label: "acme (Harborlight demo)" },
+  ]);
+
+  useEffect(() => {
+    let live = true;
+    fetch("/api/sandbox")
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((j) => {
+        if (!live) return;
+        const sandboxes: SandboxOption[] = j.sandboxes ?? [];
+        setOptions([
+          { value: "acme", label: "acme (Harborlight demo)" },
+          ...sandboxes.map((s) => ({ value: s.id, label: s.id + " (" + s.graph + ")" })),
+        ]);
+      })
+      .catch(() => {});
+    return () => {
+      live = false;
+    };
+  }, []);
+
   return (
     <div className="flex min-h-screen flex-col">
       <div className="banner-demo">Demo data · Harborlight Outfitters (fictional) · FalkorDB only · graph-only answers (no paid model)</div>
@@ -24,10 +51,18 @@ export function Shell({ children }: { children: ReactNode }) {
           <span className="inline-block h-2.5 w-2.5 rounded-full bg-emerald-400" aria-hidden />
           Crewbrain
         </Link>
-        <div className="font-mono text-xs text-neutral-500">
-          tenant: <span className="text-neutral-300">acme</span>
-        </div>
-        <div className="ml-auto"><MemoryMeter /></div>
+        <select
+          className="input font-mono text-xs bg-transparent"
+          value={tenant}
+          onChange={(e) => setTenant(e.target.value)}
+        >
+          {[...(options.some((o) => o.value === tenant) ? [] : [{ value: tenant, label: tenant }]), ...options].map((o) => (
+            <option key={o.value} value={o.value}>
+              {o.label}
+            </option>
+          ))}
+        </select>
+        <div className="ml-auto"><MemoryMeter tenant={tenant} /></div>
         <div className="font-mono text-xs text-neutral-500">
           model: <span className="text-neutral-400">graph-only</span>
         </div>
@@ -39,9 +74,6 @@ export function Shell({ children }: { children: ReactNode }) {
               {n.label}
             </Link>
           ))}
-          <div className="mt-6 px-3 font-mono text-[10px] uppercase tracking-wider text-neutral-600">Soon</div>
-          <span className="nav-link opacity-40">Explorer</span>
-          <span className="nav-link opacity-40">Agents</span>
         </nav>
         <main className="min-w-0 flex-1 p-4">{children}</main>
       </div>

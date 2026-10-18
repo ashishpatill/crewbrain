@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { useTenant } from "../components/tenant";
 
 type Event = {
   ts: number;
@@ -28,6 +29,7 @@ function fmt(ms: number) {
 const KINDS = ["all", "decision", "memory", "source", "proposal", "episode", "procedure"] as const;
 
 export default function TimelinePage() {
+  const [tenant] = useTenant();
   const [events, setEvents] = useState<Event[]>([]);
   const [type, setType] = useState<(typeof KINDS)[number]>("all");
   const [asOfMode, setAsOfMode] = useState<"now" | "date">("now");
@@ -39,7 +41,7 @@ export default function TimelinePage() {
     setLoading(true);
     setError(null);
     try {
-      const params = new URLSearchParams({ tenant: "acme", type, limit: "80" });
+      const params = new URLSearchParams({ tenant, type, limit: "80" });
       if (asOfMode === "date") {
         const t = Date.parse(`${asOfDate}T23:59:59+05:30`);
         if (!Number.isNaN(t)) params.set("asOf", String(t));
@@ -53,7 +55,7 @@ export default function TimelinePage() {
     } finally {
       setLoading(false);
     }
-  }, [type, asOfMode, asOfDate]);
+  }, [type, asOfMode, asOfDate, tenant]);
 
   useEffect(() => {
     void load();

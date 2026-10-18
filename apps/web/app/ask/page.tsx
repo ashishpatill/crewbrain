@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+import { useTenant } from "../components/tenant";
 
 type Citation = { n: number; passageId: string; sourceId: string; sourceTitle: string; sourceKind: string; text: string };
 type AskResult = {
@@ -57,6 +58,7 @@ function fmt(ms: number) {
 }
 
 export default function AskPage() {
+  const [tenant] = useTenant();
   const [question, setQuestion] = useState(EXAMPLES[0]);
   const [asOfMode, setAsOfMode] = useState<"now" | "date">("now");
   const [asOfDate, setAsOfDate] = useState("2026-09-01");
@@ -83,7 +85,7 @@ export default function AskPage() {
       const res = await fetch("/api/ask", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ question: questionText, tenant: "acme", asOf, store: true }),
+        body: JSON.stringify({ question: questionText, tenant, asOf, store: true }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || res.statusText);
@@ -95,11 +97,11 @@ export default function AskPage() {
     } finally {
       setLoading(false);
     }
-  }, [question, asOf]);
+  }, [question, asOf, tenant]);
 
   const openCite = async (c: Citation) => {
     setHighlight(c.passageId);
-    const res = await fetch(`/api/source?id=${encodeURIComponent(c.passageId)}&tenant=acme`);
+    const res = await fetch(`/api/source?id=${encodeURIComponent(c.passageId)}&tenant=${encodeURIComponent(tenant)}`);
     const data = await res.json();
     if (res.ok) setDrawer(data);
   };

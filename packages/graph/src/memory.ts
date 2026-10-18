@@ -701,8 +701,9 @@ export async function listTimeline(
 
 /**
  * Ingest a short pasted document without an LLM: chunk into passages, write Source,
- * and if the text looks like the signed-URL chat, open a structured decision proposal
- * that partly supersedes D-07.
+ * and open a reviewable memory proposal for the document. If the text looks like the
+ * signed-URL chat, additionally open a structured decision proposal that partly
+ * supersedes D-07 (which takes precedence over the generic memory proposal).
  */
 export async function ingestDocument(
   g: TenantGraph,
@@ -825,6 +826,21 @@ export async function ingestDocument(
     if (d07 && d07.status === "accepted") {
       proposalId = await createProposal(g, payload, author);
     }
+  }
+
+  // If no signed-URL decision proposal was created (pattern mismatch, or D-07
+  // missing/already superseded), open a generic reviewable memory proposal.
+  if (proposalId === null) {
+    const firstChunk = chunks.length ? chunks[0] : body.replace(/\s+/g, " ").trim();
+    const memPayload: MemoryProposalPayload = {
+      kind: "memory",
+      text: (input.title + ": " + firstChunk).slice(0, 280),
+      type: "semantic",
+      epistemic: "observation",
+      sources: [sourceId],
+      written_by: author,
+    };
+    proposalId = await createProposal(g, memPayload, author);
   }
 
   return { sourceId, passageIds, proposalId };

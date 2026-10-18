@@ -1,4 +1,4 @@
-import { contextCard, listHandoffs, listTasks, raceTest, runSignedUrlScenario } from "@crewbrain/graph";
+import { contextCard, listHandoffs, listTasks, raceTest, runSignedUrlScenario, claimTask, handoff, acceptHandoff, getTask } from "@crewbrain/graph";
 import { openTenant } from "../../../lib/tenant";
 
 export const dynamic = "force-dynamic";
@@ -38,7 +38,22 @@ export async function POST(req: Request) {
       const tasks = Math.min(200, Math.max(10, Number(body.tasks ?? 50)));
       return Response.json(await raceTest(g, { agents, tasks }));
     }
-    return Response.json({ error: "action must be scenario or race" }, { status: 400 });
+    if (body.action === "claim") {
+      const task = await getTask(g, body.taskId);
+      if (!task) return Response.json({ error: `task not found: ${body.taskId}` }, { status: 404 });
+      return Response.json(await claimTask(g, body.taskId, body.agent, task.version));
+    }
+    if (body.action === "handoff") {
+      const carries = body.carries;
+      if (!Array.isArray(carries) || carries.length === 0) {
+        return Response.json({ error: "handoff must carry at least one existing Memory/Passage/Decision id" }, { status: 400 });
+      }
+      return Response.json(await handoff(g, { taskId: body.taskId, from: body.from, to: body.to, note: body.note || "", carries }));
+    }
+    if (body.action === "accept") {
+      return Response.json(await acceptHandoff(g, body.handoffId, body.agent));
+    }
+    return Response.json({ error: "action must be scenario, race, claim, handoff or accept" }, { status: 400 });
   } catch (e) {
     return Response.json({ error: (e as Error).message }, { status: 500 });
   }

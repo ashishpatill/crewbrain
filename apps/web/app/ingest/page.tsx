@@ -2,11 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { useTenant } from "../components/tenant";
 
 export default function IngestPage() {
+  const [tenant] = useTenant();
   const [title, setTitle] = useState("");
   const [kind, setKind] = useState("chat");
-  const [author, setAuthor] = useState("ravi");
+  const [author, setAuthor] = useState("omar");
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +36,7 @@ export default function IngestPage() {
       const res = await fetch("/api/ingest", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ tenant: "acme", title, kind, author, text }),
+        body: JSON.stringify({ tenant, title, kind, author, text }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || res.statusText);
@@ -49,8 +51,9 @@ export default function IngestPage() {
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-3">
       <p className="text-sm text-neutral-400">
-        Paste a short doc. No LLM: text is chunked into <code>Source</code>/<code>Passage</code> nodes.
-        If it looks like the signed-URL chat, a decision proposal that partly supersedes D-07 is opened for Review.
+        Paste a short doc. No LLM: text is chunked into <code>Source</code>/<code>Passage</code> nodes,
+        and any ingested doc opens a reviewable memory proposal in Review. The signed-URL sample
+        additionally opens a decision proposal that partly supersedes D-07.
       </p>
 
       <div className="flex flex-wrap gap-2">
@@ -102,7 +105,7 @@ export default function IngestPage() {
               <Link href="/review" className="underline">Review it →</Link>
             </div>
           ) : (
-            <div className="mt-2 text-neutral-500">No decision proposal (text did not match the signed-URL pattern, or D-07 is already superseded).</div>
+            <div className="mt-2 text-neutral-500">No proposal was opened.</div>
           )}
           <div className="mt-2 font-mono text-[11px] text-neutral-600">{result.passageIds.join(", ")}</div>
         </div>
