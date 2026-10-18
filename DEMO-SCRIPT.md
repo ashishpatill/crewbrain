@@ -1,52 +1,60 @@
-# Crewbrain demo recording script — NEW UI (post-revamp, not the current live UI) (~110 seconds; acceptable range 90–120s — use the HOLDs, don't rush the clicks)
+# Crewbrain demo recording script — finished UI (Home + unified run) (~2 minutes; acceptable 1:50–2:10 — use the HOLDs, don't rush clicks)
 
-Setup: Chrome full width, 150% zoom (Ctrl/+ twice), open https://crewbrain-lilac.vercel.app/ — it redirects to /start. Tenant selector (top bar) must say: acme (Harborlight demo). Have the upload sample ready on this machine: /workspace/demo-upload-sample.md (same file is in the repo at demo/demo-upload-sample.md).
-Pre-flighted live state (verified 18 Oct 2026, evening IST): D-07 partially superseded by approved signed-URL decision D-191925f2, acme proposals contain only PR-e1410734 (approved, decidedBy nia on the proposal record) and no pending proposals, Agents scenario task TK-8b6b523f done with 3 handoffs, sandbox sbx_10eqlo5c (t_sbx_10eqlo5c, expires ~19 Oct 18:37 IST — if expired, create a new one in step 7 and use its id). The gift-wrap sample is NOT in the acme graph yet (checked: an Ask about kraft paper / twine abstains with 0 citations), so the upload in step 3 creates a fresh proposal on the first take.
+Live site: https://crewbrain-lilac.vercel.app — verified post-push 18 Oct 2026, evening IST (Asia/Calcutta), production head `900a496`, Vercel deployment `dpl_9LycQWhnRNcSy3jEeXVa1vhxPKp7` READY.
+
+Setup: Chrome full width, 150% zoom (Ctrl/+ twice). Have the upload sample ready on this machine: `/workspace/demo-upload-sample.md` (same file is in the repo at `demo/demo-upload-sample.md`).
+
+## Pre-flight (do this BEFORE recording, not on camera)
+
+1. Open **Sandboxes** and click **New sandbox**. Note the new id (it looks like `sbx_xxxxxxxx`). This fresh sandbox is the upload tenant for step 4 and the tenant-switch tenant for step 6. It expires 24 hours after creation.
+   - Do **not** use `sbx_ulajgxtd` for the take: the 18 Oct live smoke left a pending PDF proposal (`PR-6bdc8ee1`) and a gift-wrap proposal in it.
+   - Do **not** use the older `sbx_10eqlo5c` either: it has extra nodes from earlier takes.
+2. Switch the top-bar tenant selector back to **acme (Harborlight demo)** before pressing record. Steps 1–3 are acme-only.
+3. Live acme state verified 18 Oct 2026 evening IST: **no pending proposals** (only three approved ones: `PR-e1410734`, `PR-4c5cf66f`, `PR-32d14b75` — gift-wrap is already approved in acme, which is exactly why step 4 uploads that file in the fresh sandbox, not in acme). Acme's Agents board also shows, besides the finished scenario task, the claimed Zorblax task from the live smoke — that is expected, not a glitch.
+4. The header's global Run indicator follows the latest run in the selected tenant. After step 2 it should read along the lines of "Run · stage 6 of 6 · Review pending proposals · done" on other pages; in the upload sandbox it follows that tenant's run instead.
 
 Narration honesty line (say or show on screen): "This is the fictional Harborlight Outfitters demo company, disclosed in the banner. Everything else is real: every answer, write and claim runs against live FalkorDB — no mocks, no model faking answers."
 
 ## Click path
 
-1. START (0:00–0:20) — /start is already open ("Start with your requirement").
-   - Type in the requirement box (the big box at top): "Why did we pick Stripe instead of Adyen?" Click "Start →". (Suggestion chips sit under it; the Stripe chip does the same in one click.)
-   - Expected on screen (verified on production acme, 18 Oct evening): outcome "answered", and this exact stage list — received: done, ask: done "answered by decision D-04", task: skipped, claim: skipped, execution: skipped, review: done "no pending proposals". Below it, the traced answer with 4 citations. (On a later retake, if an earlier take left the step-3 upload proposal pending, the review stage instead reads stopped and names that proposal — both are truthful; don't pause for it.)
-   - HOLD 6s on the rendered stage list. Say: "Start with a requirement, not a dashboard. It traced this against the graph first — answered by decision D-04, with citations — so no task was needed. Stages it didn't need are skipped, not hidden."
-   - Point at the citations under the answer. Say: "Every claim traces to a passage in the graph."
+1. **HOME (0:00–0:15)** — open https://crewbrain-lilac.vercel.app/ (it now lands on the Home page, not a redirect).
+   - Expected on screen: hero "Crewbrain — a shared memory graph for agent teams", the feature-card grid ("Decision graph + as-of time travel", "Cited Ask with honest abstention", "Document ingest (text PDFs included)", "Requirement-first Start (unified run)", "Agent task claiming", "Per-tenant sandboxes", "Handoffs with evidence"), "How it works", and the "Honest limits" card.
+   - HOLD 4s, scrolling slowly through the feature cards. Say: "Crewbrain is a shared memory graph for agent teams — decisions with reasons, citations, and human approval."
+   - Click **Start a run**.
 
-2. ASK (0:20–0:42) — click Ask in the left nav.
-   - FIRST set "As of" to "date" (the date field already shows 2026-09-01) — do this before asking. As of now this question abstains: today's approved D-191925f2 partly superseded D-07, so D-07 is no longer current (verified live: as-of-now = abstained, 0 citations; as-of 2026-09-01 = D-07, 7 citations). The date is the honest opening.
-   - Question is pre-filled: "Why did we choose Amazon S3 over MySQL for media storage?" Click Ask.
-   - Say: "As of 1 September — before today's change partly superseded it — a traced answer. Decision D-07, rejected options with reasons, and citations I can click."
-   - Expected on screen: answer header reads "as of 1 Sep 2026", decision node D-07 "Product media originals in Amazon S3" in the path list, and 7 citations under Sources ([1] = P-11-0, ticket S-11 "PLAT-41: Store media originals in Amazon S3, not in MySQL").
-   - HOLD 8s on the Ask result, then click citation [1]. Say: "Every citation opens the real passage in the graph."
-   - Click example "Why did we choose MongoDB?" Say: "Nothing recorded — it abstains instead of guessing." (This is the script's one abstention beat — keep it here, don't add another.)
+2. **START — ANSWERED RUN (0:15–0:35)** — on /start, click the suggestion chip "Why did we pick Stripe instead of Adyen?".
+   - Expected on screen (verified live on acme 18 Oct): outcome `answered`; stages received/ask done ("answered by decision D-04"), task/claim/execution skipped, review done; the traced answer with **4 citations** below; "Next action: Nothing needed — answered".
+   - HOLD 5s on the stage timeline, then point at the header. Say: "One run, driven by the requirement. It asked memory first and the graph answered from decision D-04 with citations — so no task was created, and the stages it didn't need are skipped, not hidden. This Run indicator now follows me across every page."
 
-3. INGEST — FILE UPLOAD (0:42–0:57) — click Ingest in the left nav. HOLD on the result panel until the narration finishes.
-   - Drag /workspace/demo-upload-sample.md onto the upload drop zone (or use the file picker and select it). The Title field becomes "demo-upload-sample.md" and the text box fills with the file. Leave Kind and Author as they are. Click "Ingest → propose".
-   - Upload rules shown on the page (say them if asked, don't volunteer a lecture): .txt/.md/.json/.csv/.log and .pdf (text PDFs only), 512 KB max; scanned/image-only PDFs fail (no OCR); DOCX not supported yet — no parser, and the page says so.
-   - Expected on screen, first take in acme (verified with this exact file in a production sandbox, 18 Oct): "Wrote S-ing-… with 4 passages." and "Opened proposal PR-… — Review it →". The ids differ in acme; the counts don't. (On a retake with the same file, ingest is idempotent by hash: same source, and the same still-pending proposal id comes back.)
-   - Say: "A real file upload now — same pipeline as paste. No LLM: it chunked the file into a Source with four Passages in FalkorDB, and opened a reviewable proposal. This gift-wrap topic is new — it wasn't in the graph before this upload."
+3. **ASK AS-OF (0:35–0:52)** — click **Ask** (note the Run indicator still in the header).
+   - FIRST set "As of" to **date** (the field already shows 2026-09-01) — before asking. The question is pre-filled: "Why did we choose Amazon S3 over MySQL for media storage?" Click **Ask**.
+   - Expected on screen (verified live 18 Oct): answer header "as of 1 Sep 2026", decision **D-07** "Product media originals in Amazon S3" in the path list, **7 citations** under Sources. Asking as of *now* abstains instead — D-07 was partly superseded later — so the date is the honest opening.
+   - HOLD 5s. Say: "As of 1 September, before a later change partly superseded it: decision D-07, rejected options with reasons, and citations I can click. Time travel is just valid-from / valid-to in the graph."
+   - (Optional only if a take runs short: click citation [1] to open the real passage. Do not add the MongoDB abstention beat — it is already described in the Home card, and the clock needs step 4 clean.)
 
-4. REVIEW (0:57–1:12) — click Review, set Status = all.
-   - HOLD 6s on the cards. Expected on screen: TWO proposals — the new memory proposal from step 3, status pending (by ashish), and PR-e1410734, decision, approved, "by ashish" on the card.
-   - Do NOT approve the new upload proposal on camera, and say why: "This new proposal stays pending on purpose. Approving writes a permanent Memory into the live acme graph that the agents then recall — that decision is a human's, after the recording, not a demo click. Agents cannot approve at all; the API checks the actor is a Person."
-   - For PR-e1410734, two different names, two different jobs — do not merge them: the card reads "by ashish" and its JSON says decided_by "ashish", approved_by null. That is Ashish, who raised/decided this signed-URL decision in the #infra chat. The person who approved the proposal is Nia: the production proposal record PR-e1410734 has decidedBy "nia", and D-191925f2 was written with DECIDED_BY Ashish / APPROVED_BY Nia. "Decide as" defaulting to Nia (founder) in the dropdown is a separate fact about NEW decisions — it is not who raised this one.
-   - Say: "This one was Ashish's call — decided_by Ashish on the card — and Nia approved it. A real Person approved it: agents cannot approve, the API checks the actor is a Person. Approving wrote decision D-191925f2, decided by Ashish and approved by Nia, and closed D-07 with valid_to — superseded, never overwritten. For the next decision, Decide as still defaults to Nia."
-   - Say: "That is why step 2 asked as of 1 September — D-07 was still current then. Time travel is just valid_from / valid_to in the graph."
+4. **UPLOAD IN-RUN + PROPOSAL IN-RUN (0:52–1:32)** — the clean demo path, in the **fresh sandbox** from pre-flight.
+   - Switch the top-bar tenant selector to the new sandbox id, open **Start**, and type this requirement in the big box: `What do we use at the gift-wrap station?`
+   - BEFORE pressing Start: click **Upload file** and choose `/workspace/demo-upload-sample.md` (repo copy: `demo/demo-upload-sample.md`). The source panel opens with the file's text filled in. (A text PDF works the same way — it is extracted server-side first; scanned/image-only PDFs fail honestly, there is no OCR. This take uses the markdown sample because it is byte-identical to the verified run.)
+   - Now click **Start →**.
+   - Expected on screen in a fresh sandbox (verified live 18 Oct with this exact file, in the smoke sandbox): outcome `task_created`; ask done "no recorded decision or source citations"; a task created (TK-…, todo) with the claim stage **stopped** — "no agents in this tenant; task left todo", because a sandbox tenant has no crew agents; then ingest done with a new `S-ing-…` source, **4 passages**, and a **proposal stage stopped**: "human must approve: PR-…". The "Proposals in this run" panel shows that one proposal, pending. Ids differ in a fresh sandbox; the stage pattern does not.
+   - HOLD 6s on the proposal panel. **Do NOT approve (or reject) it on camera**, and say why: "The document became a Source with four Passages and a pending proposal — inside the same run. It stays pending on purpose: approving writes permanent Memory into this graph, and only a Person can approve — agents cannot. That is a human's call after the recording."
+   - Upload rules as shown on the page, if asked: `.txt/.md/.json/.csv/.log` and `.pdf` (text PDFs only), 512 KB max; scanned/image-only PDFs are rejected honestly (no OCR); DOCX is not supported yet.
 
-5. AGENTS (1:12–1:32) — click Agents.
-   - Board shows TK-8b6b523f done, 3 handoffs with evidence. Say: "The scripted scenario performs real graph writes: researcher claims atomically, writes sourced memories, hands off with evidence; coder learns only from its context card; reviewer sends it back; coder finishes."
-   - Click "Race test: 8 agents x 50 tasks". Say: "Eight agents, fifty tasks, one compare-and-set claim query — zero double claims, live." Then HOLD 6s on the Agents board after the race test finishes.
+5. **AGENTS RACE (1:32–1:48)** — switch the tenant selector back to **acme (Harborlight demo)**, click **Agents**.
+   - The board shows the signed-URL scenario task (`TK-8b6b523f`, done, 3 handoffs with evidence) and the claimed Zorblax task from the live run. Click **"Race test: 8 agents x 50 tasks"**.
+   - Expected on screen: the result line reports 50 claimed, **0 double claims**, plus the lost-race count and p50/p95 latency.
+   - HOLD on the result line. Say: "Eight agents, fifty tasks, one compare-and-set claim query — zero double claims, live. The race creates RACE-* tasks, so they appear on the board; that is the run, not leftovers."
 
-6. MANUAL CONTROLS (1:32–1:40) — stay on Agents.
-   - HOLD 5s with the claim/handoff controls area in view. Point at the claim/handoff controls. Say: "The board is not read-only any more — manual claim, handoff with evidence ids, and accept use the same graph operations. A handoff with no evidence is rejected."
-
-7. SANDBOX / TENANT SWITCH (1:40–1:50) — click Sandboxes, then Open on t_sbx_10eqlo5c (or New sandbox → Open in Ask).
-   - Top-bar tenant selector now shows the sandbox. Ask is open on the sandbox graph.
-   - Ask "Why did we keep notes in Markdown?" HOLD 6s on the sandbox answer once it loads. Say: "A different company, a different graph — its own tiny decision. One graph per tenant." (Don't ask the S3 question here — the Mongo beat in step 2 is the script's only abstention.)
-   - Switch tenant selector back to acme before ending.
+6. **SANDBOX QUESTION (1:48–2:00)** — switch the tenant selector to the **fresh sandbox**, click **Ask**.
+   - Ask: `Why did we keep notes in Markdown?`
+   - Expected on screen (verified live 18 Oct against a fresh sandbox graph): decision **D-01** "Keep notes in Markdown", with its citation — this sandbox's own seed decision. (Do not ask the S3 question here; the sandbox graph has no such decision and would abstain — that difference is the point, but do not spend seconds on the negative on this take.)
+   - HOLD on the answer. Say: "A different company, a different graph — its own decision. One graph per tenant." End here; the tenant selector stays on the sandbox.
 
 ## Do not claim
-- No paid/model answers: banner says graph-only. Seed company is fictional and disclosed.
+
+- No organisation-level sandboxing exists today: isolation is per-tenant graphs only, sandboxes sit in one shared pool with a 24 h expiry and a cap of 20. Do not say "organisation" anywhere.
+- No paid/model answers: the banner says graph-only. The seed company is fictional and disclosed.
+- Stay off older sandboxes (`sbx_ulajgxtd`, `sbx_10eqlo5c`) for the take and keep the pre-flight's fresh sandbox for steps 4 and 6. There is **no pending proposal in acme** to demo: the only fresh pending proposal on camera is the one step 4 creates, in the sandbox.
 - Ingest does no LLM extraction: chunking + proposal only. File upload reads plain-text files (.txt/.md/.json/.csv/.log) and text PDFs (.pdf); scanned/image-only PDFs and DOCX are not supported.
-- Retrieval is alias/fuzzy for decisions plus keyword matching over passages — not semantic search. No autonomous agent executes beyond claiming a task; execution and approvals are human/manual, and the Start page labels stopped stages as stopped.
+- A sandbox tenant has no crew agents, so step 4's claim stage stopping is expected behaviour — say so rather than cutting around it. In acme an unanswerable requirement both creates **and** claims a task (the claimed Zorblax task on the board is the live proof).
+- Retrieval is alias/fuzzy for decisions plus keyword matching over passages — not semantic search. No autonomous agent executes beyond claiming a task; execution and approvals are human/manual, and the run timeline labels stopped stages as stopped.
