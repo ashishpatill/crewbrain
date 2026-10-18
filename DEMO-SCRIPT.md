@@ -9,10 +9,12 @@ Narration honesty line (say or show on screen): "This is the fictional Harborlig
 ## Click path
 
 1. ASK (0:00–0:25) — /ask is already open.
+   - FIRST set "As of" to "date" (the date field already shows 2026-09-01) — do this before asking. As of now this question abstains: today's approved D-191925f2 partly superseded D-07, so D-07 is no longer current (verified live 18 Oct: as-of-now = abstained, 0 citations; as-of 2026-09-01 = D-07, 7 citations). The date is the honest opening.
    - Question is pre-filled: "Why did we choose Amazon S3 over MySQL for media storage?" Click Ask.
-   - Say: "A traced answer. Decision D-07, rejected options with reasons, and citations I can click."
+   - Say: "As of 1 September — before today's change partly superseded it — a traced answer. Decision D-07, rejected options with reasons, and citations I can click."
+   - Expected on screen: answer header reads "as of 1 Sep 2026", decision node D-07 "Product media originals in Amazon S3" in the path list, and 7 citations under Sources ([1] = P-11-0, ticket S-11 "PLAT-41: Store media originals in Amazon S3, not in MySQL").
    - Click citation [1]. Say: "Every citation opens the real passage in the graph."
-   - Click example "Why did we choose MongoDB?" Say: "Nothing recorded — it abstains instead of guessing."
+   - Click example "Why did we choose MongoDB?" Say: "Nothing recorded — it abstains instead of guessing." (This is the script's one abstention beat — keep it here, don't add another.)
 
 2. INGEST (0:25–0:40) — click Ingest in left nav.
    - Click "Load sample chat", then "Ingest → propose".
@@ -22,7 +24,7 @@ Narration honesty line (say or show on screen): "This is the fictional Harborlig
 3. REVIEW (0:40–0:55) — click Review, set Status = all.
    - Show PR-e1410734 approved, decided by nia. "Decide as" defaults to Nia (founder).
    - Say: "First click works — the approver defaults to a real person, Nia. Agents cannot approve; the API checks the actor is a Person. Approving wrote decision D-191925f2 and closed D-07 with valid_to — superseded, never overwritten."
-   - Go back to Ask, set As of = date 2026-09-01, Ask the S3 question again. Say: "As of 1 September, the old answer. Time travel is just valid_from / valid_to in the graph."
+   - Say: "That is why step 1 asked as of 1 September — D-07 was still current then. Time travel is just valid_from / valid_to in the graph." (No re-ask here: step 1 already showed the 1 Sep answer, and asking the same S3 question as of now abstains since the partial supersession.)
 
 4. AGENTS (0:55–1:15) — click Agents.
    - Board shows TK-8b6b523f done, 3 handoffs with evidence. Say: "The scripted scenario performs real graph writes: researcher claims atomically, writes sourced memories, hands off with evidence; coder learns only from its context card; reviewer sends it back; coder finishes."
@@ -33,8 +35,7 @@ Narration honesty line (say or show on screen): "This is the fictional Harborlig
 
 6. SANDBOX / TENANT SWITCH (1:22–1:30) — click Sandboxes, then Open on t_sbx_10eqlo5c (or New sandbox → Open in Ask).
    - Top-bar tenant selector now shows the sandbox. Ask is open on the sandbox graph.
-   - Ask "Why did we keep notes in Markdown?" Say: "A different company, a different graph — its own tiny decision."
-   - Ask the S3 question. Say: "And the Harborlight decision honestly abstains here. One graph per tenant."
+   - Ask "Why did we keep notes in Markdown?" Say: "A different company, a different graph — its own tiny decision. One graph per tenant." (Don't ask the S3 question here — the Mongo beat in step 1 is the script's only abstention.)
    - Switch tenant selector back to acme before ending.
 
 ## Do not claim
