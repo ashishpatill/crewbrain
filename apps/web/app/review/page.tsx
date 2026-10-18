@@ -28,6 +28,12 @@ function summarize(p: Proposal): string {
   return (pl.text as string)?.slice(0, 120) ?? "memory";
 }
 
+function statusPill(status: string) {
+  if (status === "approved") return "pill pill-approved";
+  if (status === "rejected") return "pill pill-rejected";
+  return "pill pill-pending";
+}
+
 export default function ReviewPage() {
   const [tenant] = useTenant();
   const [status, setStatus] = useState<"pending" | "approved" | "rejected" | "all">("pending");
@@ -88,10 +94,15 @@ export default function ReviewPage() {
   };
 
   return (
-    <div className="mx-auto flex max-w-3xl flex-col gap-3">
-      <div className="flex flex-wrap items-end gap-2">
+    <div className="mx-auto flex max-w-3xl flex-col gap-6">
+      <div>
+        <h1 className="page-title">Review</h1>
+        <p className="page-desc">Human approval only — agents cannot approve. Approving writes into FalkorDB.</p>
+      </div>
+
+      <div className="flex flex-wrap items-end gap-3">
         <div>
-          <label className="mb-1 block text-xs text-neutral-500">Status</label>
+          <label className="field-label">Status</label>
           <select className="input w-auto" value={status} onChange={(e) => setStatus(e.target.value as typeof status)}>
             <option value="pending">pending</option>
             <option value="approved">approved</option>
@@ -100,7 +111,7 @@ export default function ReviewPage() {
           </select>
         </div>
         <div>
-          <label className="mb-1 block text-xs text-neutral-500">Decide as (Person only)</label>
+          <label className="field-label">Decide as (Person only)</label>
           <select className="input w-auto" value={effectiveActor} onChange={(e) => setActor(e.target.value)}>
             {actors.map((a) => (
               <option key={a.id} value={a.id}>{a.label}</option>
@@ -114,27 +125,27 @@ export default function ReviewPage() {
         Agents cannot approve — the API checks that the actor is a <code>Person</code> node. Approving a decision proposal writes it into FalkorDB and closes any superseded decision with <code>valid_to</code>.
       </p>
 
-      {error && <div className="rounded border border-red-900 bg-red-950/50 px-3 py-2 text-sm text-red-200">{error}</div>}
-      {message && <div className="rounded border border-emerald-900 bg-emerald-950/40 px-3 py-2 text-sm text-emerald-200">{message}</div>}
+      {error && <div className="rounded-2xl border border-red-900 bg-red-950/50 px-3 py-2 text-sm text-red-200">{error}</div>}
+      {message && <div className="rounded-2xl border border-emerald-900 bg-emerald-950/40 px-3 py-2 text-sm text-emerald-200">{message}</div>}
 
       {!loading && proposals.length === 0 && <div className="empty">No proposals. Ingest the sample chat to open one.</div>}
 
       <ul className="space-y-3">
         {proposals.map((p) => (
-          <li key={p.id} className="panel p-3">
-            <div className="flex flex-wrap items-start gap-2">
+          <li key={p.id} className="panel p-4">
+            <div className="flex flex-wrap items-start gap-3">
               <div className="min-w-0 flex-1">
-                <div className="font-mono text-xs text-neutral-500">
-                  {p.id} · {p.kind} · <span className="text-neutral-300">{p.status}</span>
-                  {p.createdBy && <> · by {p.createdBy}</>}
+                <div className="flex flex-wrap items-center gap-2 font-mono text-xs text-neutral-500">
+                  <span>{p.id}</span> · <span>{p.kind}</span> · <span className={statusPill(p.status)}>{p.status}</span>
+                  {p.createdBy && <span>· by {p.createdBy}</span>}
                 </div>
-                <div className="mt-1 text-sm text-neutral-100">{summarize(p)}</div>
-                <pre className="mt-2 max-h-40 overflow-auto rounded bg-neutral-900/60 p-2 text-[11px] text-neutral-500">
+                <div className="mt-2 text-sm text-neutral-100">{summarize(p)}</div>
+                <pre className="mt-3 max-h-40 overflow-auto rounded-xl bg-neutral-900/60 p-3 text-[11px] text-neutral-400">
                   {JSON.stringify(p.payload, null, 2)}
                 </pre>
               </div>
               {p.status === "pending" && (
-                <div className="flex shrink-0 flex-col gap-1">
+                <div className="flex shrink-0 flex-col gap-2">
                   <button
                     type="button"
                     className="btn btn-accent"

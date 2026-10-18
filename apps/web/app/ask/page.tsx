@@ -1,6 +1,8 @@
 "use client";
 
-import { useCallback, useMemo, useState } from "react";
+import { Suspense, useCallback, useMemo, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { parseAskPrefill } from "./prefill";
 import { useTenant } from "../components/tenant";
 
 type Citation = { n: number; passageId: string; sourceId: string; sourceTitle: string; sourceKind: string; text: string };
@@ -57,11 +59,13 @@ function fmt(ms: number) {
   return new Date(ms).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "Asia/Kolkata" });
 }
 
-export default function AskPage() {
+function AskPageInner() {
   const [tenant] = useTenant();
-  const [question, setQuestion] = useState(EXAMPLES[0]);
-  const [asOfMode, setAsOfMode] = useState<"now" | "date">("now");
-  const [asOfDate, setAsOfDate] = useState("2026-09-01");
+  const searchParams = useSearchParams();
+  const prefill = parseAskPrefill(searchParams);
+  const [question, setQuestion] = useState(prefill.question ?? EXAMPLES[0]);
+  const [asOfMode, setAsOfMode] = useState<"now" | "date">(prefill.asOfDate ? "date" : "now");
+  const [asOfDate, setAsOfDate] = useState(prefill.asOfDate ?? "2026-09-01");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<AskResult | null>(null);
@@ -125,6 +129,10 @@ export default function AskPage() {
 
   return (
     <div className="flex h-[calc(100vh-6.5rem)] flex-col gap-3">
+      <div>
+        <h1 className="page-title">Ask</h1>
+        <p className="page-desc">Trace a question against the graph and see the path behind the answer.</p>
+      </div>
       <form
         className="flex flex-wrap items-end gap-2"
         onSubmit={(e) => {
@@ -133,11 +141,11 @@ export default function AskPage() {
         }}
       >
         <div className="min-w-[20rem] flex-1">
-          <label className="mb-1 block text-xs text-neutral-500">Question</label>
+          <label className="field-label">Question</label>
           <input className="input" value={question} onChange={(e) => setQuestion(e.target.value)} placeholder="Ask why…" />
         </div>
         <div>
-          <label className="mb-1 block text-xs text-neutral-500">As of</label>
+          <label className="field-label">As of</label>
           <div className="flex gap-1">
             <select
               className="input w-auto"
@@ -296,5 +304,14 @@ export default function AskPage() {
         </aside>
       )}
     </div>
+  );
+}
+
+
+export default function AskPage() {
+  return (
+    <Suspense fallback={null}>
+      <AskPageInner />
+    </Suspense>
   );
 }

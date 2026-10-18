@@ -80,12 +80,15 @@ export default function IngestPage() {
   };
 
   return (
-    <div className="mx-auto flex max-w-2xl flex-col gap-3">
-      <p className="text-sm text-neutral-400">
-        Paste a short doc. No LLM: text is chunked into <code>Source</code>/<code>Passage</code> nodes,
-        and any ingested doc opens a reviewable memory proposal in Review. The signed-URL sample
-        additionally opens a decision proposal that partly supersedes D-07.
-      </p>
+    <div className="mx-auto flex max-w-2xl flex-col gap-6">
+      <div>
+        <h1 className="page-title">Ingest</h1>
+        <p className="page-desc">
+          Paste a short doc. No LLM: text is chunked into <code>Source</code>/<code>Passage</code> nodes,
+          and any ingested doc opens a reviewable memory proposal in Review. The signed-URL sample
+          additionally opens a decision proposal that partly supersedes D-07.
+        </p>
+      </div>
 
       <div className="flex flex-wrap gap-2">
         <button type="button" className="btn" onClick={() => void loadSample()}>
@@ -100,22 +103,22 @@ export default function IngestPage() {
         }}
         onDragLeave={() => setDragOver(false)}
         onDrop={onDrop}
-        className={`rounded border border-dashed p-4 text-sm ${dragOver ? "border-emerald-400 bg-emerald-950/20" : "border-neutral-700"}`}
+        className={`card border-dashed p-6 text-sm ${dragOver ? "border-emerald-400 bg-emerald-950/20" : ""}`}
       >
-        <div className="mb-2 text-xs text-neutral-500">
+        <div className="mb-2 text-xs text-neutral-400">
           Upload a file ({SUPPORTED_UPLOAD_EXTS.join(", ")}, max {MAX_UPLOAD_BYTES} bytes). PDF/DOCX are not supported yet (no parser in repo).
         </div>
         <input type="file" accept={SUPPORTED_UPLOAD_EXTS.join(",")} onChange={onFileChange} />
         <div className="mt-1 text-xs text-neutral-600">or drag &amp; drop a file here</div>
       </div>
 
-      <div className="grid gap-2 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-3">
         <div className="sm:col-span-2">
-          <label className="mb-1 block text-xs text-neutral-500">Title</label>
+          <label className="field-label">Title</label>
           <input className="input" value={title} onChange={(e) => setTitle(e.target.value)} />
         </div>
         <div>
-          <label className="mb-1 block text-xs text-neutral-500">Kind</label>
+          <label className="field-label">Kind</label>
           <select className="input" value={kind} onChange={(e) => setKind(e.target.value)}>
             <option value="chat">chat</option>
             <option value="doc">doc</option>
@@ -124,13 +127,13 @@ export default function IngestPage() {
           </select>
         </div>
         <div>
-          <label className="mb-1 block text-xs text-neutral-500">Author</label>
+          <label className="field-label">Author</label>
           <input className="input" value={author} onChange={(e) => setAuthor(e.target.value)} />
         </div>
       </div>
 
       <div>
-        <label className="mb-1 block text-xs text-neutral-500">Text</label>
+        <label className="field-label">Text</label>
         <textarea className="input min-h-40 font-mono text-xs" value={text} onChange={(e) => setText(e.target.value)} />
       </div>
 
@@ -138,10 +141,10 @@ export default function IngestPage() {
         {loading ? "Ingesting…" : "Ingest → propose"}
       </button>
 
-      {error && <div className="rounded border border-red-900 bg-red-950/50 px-3 py-2 text-sm text-red-200">{error}</div>}
+      {error && <div className="rounded-2xl border border-red-900 bg-red-950/50 px-3 py-2 text-sm text-red-200">{error}</div>}
 
       {result && (
-        <div className="panel p-3 text-sm">
+        <div className="panel p-4 text-sm">
           <div>
             Wrote <span className="font-mono text-emerald-300">{result.sourceId}</span> with{" "}
             {result.passageIds.length} passage{result.passageIds.length === 1 ? "" : "s"}.

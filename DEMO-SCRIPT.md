@@ -1,4 +1,4 @@
-# Crewbrain demo recording script (~110 seconds; acceptable range 90–120s — use the HOLDs, don't rush the clicks)
+# Crewbrain demo recording script — NEW UI (post-revamp, not the current live UI) (~110 seconds; acceptable range 90–120s — use the HOLDs, don't rush the clicks)
 
 Setup: Chrome full width, 150% zoom (Ctrl/+ twice), open https://crewbrain-lilac.vercel.app/ — it redirects to /start. Tenant selector (top bar) must say: acme (Harborlight demo). Have the upload sample ready on this machine: /workspace/demo-upload-sample.md (same file is in the repo at demo/demo-upload-sample.md).
 Pre-flighted live state (verified 18 Oct 2026, evening IST): D-07 partially superseded by approved signed-URL decision D-191925f2, acme proposals contain only PR-e1410734 (approved, decidedBy nia on the proposal record) and no pending proposals, Agents scenario task TK-8b6b523f done with 3 handoffs, sandbox sbx_10eqlo5c (t_sbx_10eqlo5c, expires ~19 Oct 18:37 IST — if expired, create a new one in step 7 and use its id). The gift-wrap sample is NOT in the acme graph yet (checked: an Ask about kraft paper / twine abstains with 0 citations), so the upload in step 3 creates a fresh proposal on the first take.
@@ -8,7 +8,7 @@ Narration honesty line (say or show on screen): "This is the fictional Harborlig
 ## Click path
 
 1. START (0:00–0:20) — /start is already open ("Start with your requirement").
-   - Type in the requirement box: "Why did we pick Stripe instead of Adyen?" Click "Start →".
+   - Type in the requirement box (the big box at top): "Why did we pick Stripe instead of Adyen?" Click "Start →". (Suggestion chips sit under it; the Stripe chip does the same in one click.)
    - Expected on screen (verified on production acme, 18 Oct evening): outcome "answered", and this exact stage list — received: done, ask: done "answered by decision D-04", task: skipped, claim: skipped, execution: skipped, review: done "no pending proposals". Below it, the traced answer with 4 citations. (On a later retake, if an earlier take left the step-3 upload proposal pending, the review stage instead reads stopped and names that proposal — both are truthful; don't pause for it.)
    - HOLD 6s on the rendered stage list. Say: "Start with a requirement, not a dashboard. It traced this against the graph first — answered by decision D-04, with citations — so no task was needed. Stages it didn't need are skipped, not hidden."
    - Point at the citations under the answer. Say: "Every claim traces to a passage in the graph."

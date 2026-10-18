@@ -62,10 +62,14 @@ export default function TimelinePage() {
   }, [load]);
 
   return (
-    <div className="mx-auto flex max-w-4xl flex-col gap-3">
-      <div className="flex flex-wrap items-end gap-2">
+    <div className="flex flex-col gap-6">
+      <div>
+        <h1 className="page-title">Timeline</h1>
+        <p className="page-desc">Chronological events in the current tenant graph.</p>
+      </div>
+      <div className="flex flex-wrap items-end gap-3">
         <div>
-          <label className="mb-1 block text-xs text-neutral-500">Scope type</label>
+          <label className="field-label">Scope type</label>
           <select className="input w-auto" value={type} onChange={(e) => setType(e.target.value as (typeof KINDS)[number])}>
             {KINDS.map((k) => (
               <option key={k} value={k}>{k}</option>
@@ -73,7 +77,7 @@ export default function TimelinePage() {
           </select>
         </div>
         <div>
-          <label className="mb-1 block text-xs text-neutral-500">As of</label>
+          <label className="field-label">As of</label>
           <div className="flex gap-1">
             <select className="input w-auto" value={asOfMode} onChange={(e) => setAsOfMode(e.target.value as "now" | "date")}>
               <option value="now">now</option>
@@ -93,17 +97,17 @@ export default function TimelinePage() {
 
       {!loading && events.length === 0 && <div className="empty">No events in this scope.</div>}
 
-      <ul className="panel divide-y divide-neutral-900">
+      <ul className="space-y-2">
         {events.map((e) => (
-          <li key={`${e.kind}-${e.id}-${e.ts}`} className="flex gap-3 px-3 py-2.5 text-sm">
+          <li key={`${e.kind}-${e.id}-${e.ts}`} className="card flex flex-col gap-2 sm:flex-row sm:items-start">
             <div className="w-40 shrink-0 font-mono text-[11px] text-neutral-500">{fmt(e.ts)}</div>
-            <div className="w-24 shrink-0 font-mono text-[11px] uppercase tracking-wide text-emerald-500/80">{e.kind}</div>
+            <span className="pill pill-kind">{e.kind}</span>
             <div className="min-w-0 flex-1">
               <div className="text-neutral-100">
                 <span className="font-mono text-xs text-neutral-500">{e.id}</span> {e.title}
               </div>
               <div className="mt-0.5 text-xs text-neutral-500">
-                {e.status && <span className="mr-2 rounded bg-neutral-900 px-1.5 py-0.5 font-mono">{e.status}</span>}
+                {e.status && <span className="pill pill-skipped">{e.status}</span>}
                 {e.actor && <span>by {e.actor}</span>}
                 {e.detail && <span className="ml-2 text-amber-500/80">{e.detail}</span>}
                 {e.validTo && <span className="ml-2 font-mono text-neutral-600">valid_to {fmt(e.validTo)}</span>}

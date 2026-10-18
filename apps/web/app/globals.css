@@ -2,9 +2,9 @@
 
 :root {
   color-scheme: dark;
-  --accent: #6ee7b7;
-  --accent-dim: #065f46;
-  --panel: #0a0a0a;
+  --accent: #34d399;
+  --accent-dim: #064e3b;
+  --panel: #111111;
   --border: #262626;
 }
 
@@ -23,35 +23,100 @@ a { @apply text-neutral-300 hover:text-white; }
   @apply border-b border-amber-900/60 bg-amber-950/40 px-4 py-1.5 text-center text-xs text-amber-200/90;
 }
 
+/* ---- typography scale ---- */
+.page-title {
+  @apply text-2xl font-semibold tracking-tight text-neutral-100 sm:text-3xl;
+  overflow-wrap: normal;
+  hyphens: none;
+  -webkit-hyphens: none;
+}
+.page-desc {
+  @apply mt-1 text-sm text-neutral-400;
+}
+.section-title {
+  @apply text-xs font-semibold uppercase tracking-wider text-neutral-400;
+}
+.field-label {
+  @apply mb-1 block text-xs font-medium uppercase tracking-wide text-neutral-400;
+}
+
+/* ---- surfaces ---- */
+.panel {
+  @apply rounded-2xl border border-neutral-800 bg-neutral-900/60 shadow-sm;
+}
+.card {
+  @apply rounded-2xl border border-neutral-800 bg-neutral-900/40 p-4 shadow-sm transition-colors;
+}
+.card:hover {
+  @apply border-neutral-700 bg-neutral-900/70;
+}
+.empty {
+  @apply rounded-2xl border border-dashed border-neutral-800 p-8 text-center text-sm text-neutral-500;
+}
+
+/* ---- nav ---- */
 .nav-link {
-  @apply block rounded px-3 py-2 text-sm text-neutral-400 hover:bg-neutral-900 hover:text-neutral-100;
+  @apply inline-flex shrink-0 items-center rounded-lg px-3 py-2 text-sm text-neutral-400 hover:bg-neutral-900 hover:text-neutral-100;
 }
 .nav-link[data-active="true"] {
   @apply bg-neutral-900 text-[var(--accent)];
 }
 
-.panel {
-  @apply rounded-lg border border-neutral-800 bg-neutral-950/80;
+.nav-scroll-fade {
+  -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);
+  mask-image: linear-gradient(to right, black 85%, transparent 100%);
 }
 
+/* ---- buttons ---- */
 .btn {
-  @apply inline-flex items-center justify-center rounded border border-neutral-700 bg-neutral-900 px-3 py-1.5 text-sm text-neutral-100 hover:border-neutral-500 hover:bg-neutral-800 disabled:opacity-40;
+  @apply inline-flex items-center justify-center rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-1.5 text-sm text-neutral-100 transition-colors hover:border-neutral-500 hover:bg-neutral-800 disabled:cursor-not-allowed disabled:opacity-40;
+}
+.btn-primary {
+  @apply border-emerald-700 bg-emerald-600 text-white hover:border-emerald-500 hover:bg-emerald-500;
 }
 .btn-accent {
-  @apply border-emerald-800 bg-emerald-950 text-emerald-200 hover:border-emerald-600 hover:bg-emerald-900;
+  @apply border-emerald-500 bg-emerald-600 text-white hover:border-emerald-400 hover:bg-emerald-500;
 }
 .btn-danger {
   @apply border-red-900 bg-red-950 text-red-200 hover:border-red-700;
 }
 
+/* ---- inputs ---- */
 .input {
-  @apply w-full rounded border border-neutral-700 bg-neutral-900 px-3 py-2 text-sm text-neutral-100 placeholder:text-neutral-600 focus:border-emerald-700 focus:outline-none;
+  @apply w-full rounded-lg border border-neutral-700 bg-neutral-900 px-3 py-2 text-sm text-neutral-100 placeholder:text-neutral-600 focus:border-emerald-600 focus:outline-none;
+}
+
+/* ---- pills ---- */
+.pill {
+  @apply inline-flex items-center rounded-full border px-2 py-0.5 text-xs font-medium;
+}
+.pill-done {
+  @apply border-emerald-900 bg-emerald-950/60 text-emerald-300;
+}
+.pill-stopped {
+  @apply border-amber-900 bg-amber-950/60 text-amber-300;
+}
+.pill-skipped {
+  @apply border-neutral-800 bg-neutral-900 text-neutral-400;
+}
+.pill-pending {
+  @apply border-amber-900 bg-amber-950/60 text-amber-300;
+}
+.pill-approved {
+  @apply border-emerald-900 bg-emerald-950/60 text-emerald-300;
+}
+.pill-rejected {
+  @apply border-red-900 bg-red-950/60 text-red-300;
+}
+.pill-kind {
+  @apply border-neutral-800 bg-neutral-900 text-emerald-400/90;
 }
 
 .cite {
   @apply cursor-pointer font-mono text-emerald-400 hover:underline;
 }
 
-.empty {
-  @apply rounded border border-dashed border-neutral-800 p-8 text-center text-sm text-neutral-500;
+/* ---- focus rings ---- */
+.btn, .nav-link, .input, .card, a, button {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-400/50 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-950;
 }
