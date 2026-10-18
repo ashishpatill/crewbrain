@@ -1,12 +1,12 @@
 # Crewbrain
 
+![Crewbrain poster](demo/demo-poster.jpg)
+
 Crewbrain is a shared memory for teams that work with AI agents. Every decision the team makes is stored in one FalkorDB graph, together with the reasons behind it and the sources it came from. Anyone can ask why a decision was made and get an answer that can be checked.
 
-Watch the demo. It runs under two minutes and is narrated.
+Watch the 2 minute demo.
 
 https://github.com/user-attachments/assets/bd573f03-8b34-46bc-afb7-d567b053bc3b
-
-![Crewbrain poster](demo/demo-poster.jpg)
 
 [Live demo](https://crewbrain-lilac.vercel.app)
 
