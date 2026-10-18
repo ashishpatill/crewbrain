@@ -11,6 +11,7 @@ type RunStage = { key: string; label: string; state: string; detail: string };
 type RunRecord = { id: string; stages: RunStage[]; outcome: string; nextAction: { label: string; href?: string } };
 
 const NAV = [
+  { href: "/", label: "Home" },
   { href: "/start", label: "Start" },
   { href: "/ask", label: "Ask" },
   { href: "/timeline", label: "Timeline" },
@@ -72,7 +73,7 @@ export function Shell({ children }: { children: ReactNode }) {
     <div className="flex min-h-screen flex-col">
       <div className="banner-demo">Demo data · Harborlight Outfitters (fictional) · FalkorDB only · graph-only answers (no paid model)</div>
       <header className="flex flex-wrap items-center gap-3 border-b border-neutral-800 px-4 py-3">
-        <Link href="/ask" className="flex items-center gap-2 text-sm font-semibold tracking-wide text-neutral-100">
+        <Link href="/" className="flex items-center gap-2 text-sm font-semibold tracking-wide text-neutral-100">
           <span className="inline-block h-2.5 w-2.5 rounded-full bg-emerald-400" aria-hidden />
           Crewbrain
         </Link>
@@ -117,7 +118,7 @@ export function Shell({ children }: { children: ReactNode }) {
               key={n.href}
               href={n.href}
               className="nav-link"
-              data-active={path === n.href || path.startsWith(n.href + "/")}
+              data-active={n.href === "/" ? path === "/" : path === n.href || path.startsWith(n.href + "/")}
             >
               {n.label}
             </Link>
