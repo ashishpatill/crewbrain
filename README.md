@@ -7,9 +7,9 @@ Tracks: **Agent Memory and Coordination** (main) and **Company Brain**. License:
 
 ## Demo
 
-**[Watch the demo video](demo/crewbrain-demo.mp4)** (93 seconds, narrated) · [Live demo](https://crewbrain-lilac.vercel.app)
+**[Watch the demo video](demo/crewbrain-demo.mp4)** (silent, 117 seconds — voice-over added separately) · [Live demo](https://crewbrain-lilac.vercel.app)
 
-The video walks through the live site on the Harborlight Outfitters demo data: a traced answer with citations, an abstention when nothing is recorded, an as-of ask, proposal review, the agents board, and visitor sandboxes.
+The silent walkthrough shows the live site on the Harborlight Outfitters demo data: Ask as of 1 Sep with citations and an honest abstention, Ingest, Review, the Agents race test, manual controls, and a Sandbox tenant.
 
 ## Why
 
