@@ -1,8 +1,8 @@
 export default function RoadmapPage() {
   const items = [
     {
-      title: "PDF & DOCX parsing with page-level citations",
-      detail: "Parse real documents and cite the page/section, not just the passage.",
+      title: "DOCX parsing + PDF page-level citations",
+      detail: "Text PDF ingest is supported now (no OCR for scanned/image-only). DOCX parsing and page/section citations beyond passage-level remain work.",
     },
     {
       title: "Semantic & hybrid search",

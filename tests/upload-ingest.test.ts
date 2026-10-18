@@ -16,17 +16,19 @@ afterAll(async () => {
 });
 
 describe("upload validation", () => {
-  it("accepts .txt/.md and rejects .pdf and oversized", () => {
+  it("accepts .txt/.md/.pdf and rejects .docx and oversized", () => {
     expect(validateUploadFile("note.txt", 10).ok).toBe(true);
     expect(validateUploadFile("readme.md", 10).ok).toBe(true);
-    const pdf = validateUploadFile("doc.pdf", 10);
-    expect(pdf.ok).toBe(false);
-    expect((pdf.error || pdf.message || "")).toMatch(/supported/i);
-    expect((pdf.error || pdf.message || "")).toContain(".txt");
+    expect(validateUploadFile("doc.pdf", 10).ok).toBe(true);
+    const docx = validateUploadFile("doc.docx", 10);
+    expect(docx.ok).toBe(false);
+    expect((docx.error || docx.message || "")).toMatch(/supported/i);
+    expect((docx.error || docx.message || "")).toContain(".txt");
     const big = validateUploadFile("big.txt", MAX_UPLOAD_BYTES + 1);
     expect(big.ok).toBe(false);
     expect((big.error || big.message || "")).toMatch(/exceed|too large/i);
     expect(SUPPORTED_UPLOAD_EXTS).toContain(".txt");
+    expect(SUPPORTED_UPLOAD_EXTS).toContain(".pdf");
   });
 });
 

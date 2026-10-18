@@ -37,10 +37,21 @@ export default function IngestPage() {
       setError(v.error || v.message || "Invalid file");
       return;
     }
+    const isPdf = file.name.toLowerCase().endsWith(".pdf");
     try {
-      const content = await file.text();
-      setTitle(file.name);
-      setText(content);
+      if (isPdf) {
+        const form = new FormData();
+        form.append("file", file);
+        const res = await fetch("/api/ingest/pdf", { method: "POST", body: form });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || res.statusText);
+        setTitle(file.name);
+        setText(String(data.text ?? ""));
+      } else {
+        const content = await file.text();
+        setTitle(file.name);
+        setText(content);
+      }
     } catch (e) {
       setError((e as Error).message);
     }
@@ -106,7 +117,7 @@ export default function IngestPage() {
         className={`card border-dashed p-6 text-sm ${dragOver ? "border-emerald-400 bg-emerald-950/20" : ""}`}
       >
         <div className="mb-2 text-xs text-neutral-400">
-          Upload a file ({SUPPORTED_UPLOAD_EXTS.join(", ")}, max {MAX_UPLOAD_BYTES} bytes). PDF/DOCX are not supported yet (no parser in repo).
+          Upload a file ({SUPPORTED_UPLOAD_EXTS.join(", ")}, max {MAX_UPLOAD_BYTES} bytes). Text PDFs supported; scanned/image-only PDFs fail (no OCR). DOCX still unsupported.
         </div>
         <input type="file" accept={SUPPORTED_UPLOAD_EXTS.join(",")} onChange={onFileChange} />
         <div className="mt-1 text-xs text-neutral-600">or drag &amp; drop a file here</div>

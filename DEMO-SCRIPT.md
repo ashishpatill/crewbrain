@@ -23,7 +23,7 @@ Narration honesty line (say or show on screen): "This is the fictional Harborlig
 
 3. INGEST — FILE UPLOAD (0:42–0:57) — click Ingest in the left nav. HOLD on the result panel until the narration finishes.
    - Drag /workspace/demo-upload-sample.md onto the upload drop zone (or use the file picker and select it). The Title field becomes "demo-upload-sample.md" and the text box fills with the file. Leave Kind and Author as they are. Click "Ingest → propose".
-   - Upload rules shown on the page (say them if asked, don't volunteer a lecture): .txt/.md/.json/.csv/.log only, 512 KB max; PDF/DOCX are not supported yet — no parser, and the page says so.
+   - Upload rules shown on the page (say them if asked, don't volunteer a lecture): .txt/.md/.json/.csv/.log and .pdf (text PDFs only), 512 KB max; scanned/image-only PDFs fail (no OCR); DOCX not supported yet — no parser, and the page says so.
    - Expected on screen, first take in acme (verified with this exact file in a production sandbox, 18 Oct): "Wrote S-ing-… with 4 passages." and "Opened proposal PR-… — Review it →". The ids differ in acme; the counts don't. (On a retake with the same file, ingest is idempotent by hash: same source, and the same still-pending proposal id comes back.)
    - Say: "A real file upload now — same pipeline as paste. No LLM: it chunked the file into a Source with four Passages in FalkorDB, and opened a reviewable proposal. This gift-wrap topic is new — it wasn't in the graph before this upload."
 
@@ -48,5 +48,5 @@ Narration honesty line (say or show on screen): "This is the fictional Harborlig
 
 ## Do not claim
 - No paid/model answers: banner says graph-only. Seed company is fictional and disclosed.
-- Ingest does no LLM extraction: chunking + proposal only. File upload reads plain-text files (.txt/.md/.json/.csv/.log) only; PDF/DOCX are not supported.
+- Ingest does no LLM extraction: chunking + proposal only. File upload reads plain-text files (.txt/.md/.json/.csv/.log) and text PDFs (.pdf); scanned/image-only PDFs and DOCX are not supported.
 - Retrieval is alias/fuzzy for decisions plus keyword matching over passages — not semantic search. No autonomous agent executes beyond claiming a task; execution and approvals are human/manual, and the Start page labels stopped stages as stopped.

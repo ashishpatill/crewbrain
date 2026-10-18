@@ -1,4 +1,4 @@
-export const SUPPORTED_UPLOAD_EXTS = [".txt", ".md", ".json", ".csv", ".log"] as const;
+export const SUPPORTED_UPLOAD_EXTS = [".txt", ".md", ".json", ".csv", ".log", ".pdf"] as const;
 export const MAX_UPLOAD_BYTES = 512 * 1024;
 
 export function isSupportedUpload(name: string): boolean {
@@ -15,7 +15,7 @@ export interface UploadValidation {
 
 export function validateUploadFile(name: string, sizeBytes: number): UploadValidation {
   if (!isSupportedUpload(name)) {
-    const msg = `Unsupported file type. Supported types: ${SUPPORTED_UPLOAD_EXTS.join(", ")}. PDF/DOCX are not supported yet.`;
+    const msg = `Unsupported file type. Supported types: ${SUPPORTED_UPLOAD_EXTS.join(", ")}. DOCX is not supported yet (PDF now is).`;
     return { ok: false, valid: false, error: msg, message: msg };
   }
   if (sizeBytes > MAX_UPLOAD_BYTES) {
