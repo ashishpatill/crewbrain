@@ -16,7 +16,7 @@ Honest limits. Retrieval today is keyword and fuzzy matching, not semantic vecto
 
 Watch the demo. It runs under two minutes and is narrated.
 
-<video src="https://github.com/ashishpatill/crewbrain/raw/main/demo/crewbrain-demo.mp4" controls="controls" width="100%"></video>
+[![Watch the demo video](demo/demo-poster.jpg)](demo/crewbrain-demo.mp4)
 
 [Watch the demo video](demo/crewbrain-demo.mp4) · [Live demo](https://crewbrain-lilac.vercel.app)
 
