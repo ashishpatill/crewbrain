@@ -25,12 +25,19 @@ The questions people ask about this are questions about connections: *why* (deci
 
 | Feature | Where |
 |---|---|
-| **Ask why, with a trace.** Decisions link to chosen/rejected options, reasons, supporting passages, sources and deciders. The answer cites node ids, a validator rejects any citation not in the retrieved subgraph, and with no recorded decision it says so instead of guessing. | Ask page, `pnpm ask` |
-| **Memory that changes over time.** Episodic (agent sessions and turns), semantic (sourced facts) and procedural (reviewed how-tos) memory. Facts are superseded, never overwritten, so "what did we believe on 1 Sep?" still works. | Timeline, Review, Ingest |
-| **Shared tasks with an atomic claim.** One Cypher query compares the task version and claims it; at most one concurrent agent wins. | Agents page |
-| **Handoffs that must carry evidence.** A handoff without at least one existing Memory, Passage or Decision is rejected. The receiver's next session starts from a context card built from the graph. | Agents page |
-| **Race test.** 8 agents claim 50 tasks at once; the graph is then checked for double claims. | Agents page, tests |
-| **One graph per tenant.** `t_acme`, plus visitor sandboxes `t_sbx_<8>` (24 h lifetime, cap 20). A `GRAPH.MEMORY USAGE` meter shows each graph's size. | Sandboxes page |
+| **Home landing page.** Real landing page at `/`: hero, shipped-feature cards, how-it-works steps, and an honest-limits strip linking to `/roadmap`. Home is the overview; `/start` is the app entry where runs begin. | Home |
+| **Unified requirement-first Run.** Started from Home/Start: Ask memory first; only if no decision is found, create a task and let an agent claim it via the atomic compare-and-swap claim; ingest documents inline in the same run (plain text + text PDFs, 512KB cap; scanned/image-only PDFs rejected honestly, no OCR); a pending proposal appears in the same run and only a Person can approve or reject it; re-asking after approval closes the loop. Stops honestly where human approval or manual work is required. The run persists as a `(:Run)` node in the tenant's own FalkorDB graph. | Start |
+| **Computed "Next:" guidance.** Derived from real run state, tells the user the one next step to complete their goal. | Start |
+| **CSS-only animated stage timeline.** Shows pipeline progress; respects `prefers-reduced-motion`. | Start |
+| **Global header Run indicator.** `Run · stage X of Y · label · status` on every page, showing current pipeline position everywhere. | All pages (header) |
+| **Ask why, with a trace.** Decisions link to chosen/rejected options, reasons, supporting passages, sources and deciders. The answer cites node ids, a validator rejects any citation not in the retrieved subgraph, and with no recorded decision it says so instead of guessing. | Ask, `pnpm ask` |
+| **Memory over time.** Episodic (agent sessions and turns), semantic (sourced facts) and procedural (reviewed how-tos) memory. Facts are superseded, never overwritten, so "what did we believe on 1 Sep?" still works. | Timeline, Review, Ingest |
+| **Document ingest.** Pasted or uploaded plain-text files (.txt, .md, .json, .csv, .log) and text PDFs chunk into Source and Passage nodes with hashed idempotency; opens reviewable proposals that only a Person can approve; procedural memory always becomes a proposal. 512KB cap; scanned/image-only PDFs rejected (no OCR); DOCX not supported. | Ingest |
+| **Review proposals.** Pending proposals approved or rejected by a Person only; agents cannot approve their own work. | Review |
+| **Shared tasks with an atomic claim.** One Cypher query compares the task version and claims it; at most one concurrent agent wins. | Agents |
+| **Handoffs with evidence + context cards.** A handoff without at least one existing Memory, Passage or Decision is rejected. The receiver's next session starts from a context card built from the graph. | Agents |
+| **Race test.** 8 agents claim 50 tasks at once; the graph is then checked for double claims. | Agents, tests |
+| **One graph per tenant.** `t_acme`, plus visitor sandboxes `t_sbx_<8>` (24 h lifetime, cap 20). No organisation-level sandboxing; isolation is one graph per tenant only. A `GRAPH.MEMORY USAGE` meter shows each graph's size. | Sandboxes |
 
 No paid AI: answers are built from the graph path ("graph-only mode"). An optional free-tier model can be added later; the product never fakes a model answer.
 
@@ -39,7 +46,7 @@ No paid AI: answers are built from the graph path ("graph-only mode"). An option
 ```mermaid
 flowchart LR
   subgraph Clients
-    UI["Next.js UI<br/>Ask · Timeline · Review · Ingest · Agents · Sandboxes"]
+    UI["Next.js UI<br/>Home · Start · Ask · Timeline · Review · Ingest · Agents · Sandboxes · Roadmap"]
     CLI["CLI<br/>migrate · seed · ask"]
   end
   subgraph App["apps/web API routes (stateless)"]
