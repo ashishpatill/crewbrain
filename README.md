@@ -5,6 +5,12 @@
 Built during [Graph Hacks: Context for AI Agents](https://www.wemakedevs.org/hackathons/falkordb) (15–18 Oct 2026), on FalkorDB.
 Tracks: **Agent Memory and Coordination** (main) and **Company Brain**. License: MIT.
 
+## Demo
+
+**[Watch the demo video](demo/crewbrain-demo.mp4)** (93 seconds, narrated) · [Live demo](https://crewbrain-lilac.vercel.app)
+
+The video walks through the live site on the Harborlight Outfitters demo data: a traced answer with citations, an abstention when nothing is recorded, an as-of ask, proposal review, the agents board, and visitor sandboxes.
+
 ## Why
 
 Teams now run several AI agents: a researcher, a coder, a reviewer, an ingest bot. Each one forgets everything between sessions, none of them knows what the others decided, and when one says "we chose Amazon S3", nobody can tell where that came from.
