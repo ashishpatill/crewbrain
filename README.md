@@ -7,7 +7,7 @@ Tracks: **Agent Memory and Coordination** (main) and **Company Brain**. License:
 
 ## Demo
 
-**[Watch the demo video](demo/crewbrain-demo.mp4)** (silent, ~1:38) · [Live demo](https://crewbrain-lilac.vercel.app)
+**[Watch the demo video](demo/crewbrain-demo.mp4)** (narrated, ~1:53) · [Live demo](https://crewbrain-lilac.vercel.app)
 
 The silent walkthrough shows the finished product on the live site, using the fictional Harborlight Outfitters demo data: the Home page, a unified run from Start driven by a plain-language requirement, Ask as of 1 Sep with citations, document ingest in the same run — plain-text files and text PDFs (no OCR for scanned/image-only PDFs; DOCX not yet supported) becoming a Source with passages and a pending proposal that only a Person can approve — the header pipeline indicator following the run across pages, the Agents race test, and a separate per-tenant sandbox graph. Agents claim tasks through the atomic claim; they do not execute them autonomously — execution and approvals stay human/manual, and stopped stages are labelled as stopped. Retrieval is alias/fuzzy matching for decisions plus keyword matching over passages, not semantic search, and isolation is per-tenant graphs only (visitor sandboxes expire after 24 hours, capped at 20) — there is no organisation-level sandboxing.
 
