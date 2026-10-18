@@ -6,6 +6,8 @@ Watch the demo. It runs under two minutes and is narrated.
 
 https://github.com/user-attachments/assets/bd573f03-8b34-46bc-afb7-d567b053bc3b
 
+![Crewbrain poster](demo/demo-poster.jpg)
+
 [Live demo](https://crewbrain-lilac.vercel.app)
 
 Most agent memory tools return text that sounds right and cannot be verified. Crewbrain answers from the graph itself. Every answer shows the exact path through the graph and cites the nodes it used, and a validator rejects any citation that is not part of that path. When no decision was recorded, Crewbrain says so and stops. It does not invent an answer.
