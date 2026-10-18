@@ -4,7 +4,9 @@ Crewbrain is a shared memory for teams that work with AI agents. Every decision 
 
 Watch the demo. It runs under two minutes and is narrated.
 
-[![Watch the demo video](demo/demo-poster.jpg)](demo/crewbrain-demo.mp4)
+https://youtu.be/YxIn3CyGBTc
+
+[![Watch the demo video](demo/demo-poster.jpg)](https://www.youtube.com/watch?v=YxIn3CyGBTc)
 
 [Watch the demo video](demo/crewbrain-demo.mp4) · [Live demo](https://crewbrain-lilac.vercel.app)
 
