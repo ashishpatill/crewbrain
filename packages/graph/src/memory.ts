@@ -803,7 +803,7 @@ export async function ingestDocument(
       rejected: [],
       about: ["cloudfront", "s3"],
       project: "storefront",
-      decided_by: "omar",
+      decided_by: "ashish",
       approved_by: null,
       supersedes: "D-07",
       partial: true,

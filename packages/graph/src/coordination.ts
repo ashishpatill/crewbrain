@@ -252,8 +252,8 @@ export async function runSignedUrlScenario(g: TenantGraph): Promise<{ taskId: st
   const steps: ScenarioStep[] = [];
   const log = (agent: string, action: string, detail: string, ids: string[] = []) => steps.push({ agent, action, detail, ids });
 
-  const task = await createTask(g, { title: "Add signed URLs for lookbook videos", project: "storefront", priority: 1, createdBy: "omar" });
-  log("omar", "create_task", task.title, [task.id]);
+  const task = await createTask(g, { title: "Add signed URLs for lookbook videos", project: "storefront", priority: 1, createdBy: "ashish" });
+  log("ashish", "create_task", task.title, [task.id]);
 
   // researcher
   const r = await claimTask(g, task.id, "researcher", task.version);

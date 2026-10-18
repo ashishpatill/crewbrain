@@ -24,7 +24,7 @@ export async function GET() {
     return Response.json({
       title: meta.title ?? "#infra · signed URLs for lookbook video",
       kind: meta.kind ?? "chat",
-      author: meta.author ?? "omar",
+      author: meta.author ?? "ashish",
       created_at: meta.created_at ?? null,
       text: (m ? m[2] : raw).trim(),
     });

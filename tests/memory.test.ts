@@ -173,7 +173,7 @@ describe("review queue: approve / reject enforced server-side", () => {
       text: body,
       title: "#infra · signed URLs for lookbook video",
       kind: "chat",
-      author: "omar",
+      author: "ashish",
       createdAt: Date.parse("2026-10-14T09:40:00+05:30"),
     });
     expect(ingested.proposalId).toMatch(/^PR-/);

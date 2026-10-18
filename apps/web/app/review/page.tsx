@@ -16,7 +16,7 @@ type Proposal = {
 
 const ACTORS = [
   { id: "nia", label: "Nia (founder)" },
-  { id: "omar", label: "Omar (platform)" },
+  { id: "ashish", label: "Ashish (platform)" },
 ];
 
 function summarize(p: Proposal): string {

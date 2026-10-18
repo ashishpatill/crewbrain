@@ -53,7 +53,7 @@ describe("trace: seed questions", () => {
   it("headline decision carries deciders, rejection reason and three distinct reasons", async () => {
     const r = await ask(acme, "Why did we choose Amazon S3 over MySQL for media storage?", { store: false });
     const d = r.decision!;
-    expect(d.decidedBy.map((p) => p.id)).toEqual(["omar"]);
+    expect(d.decidedBy.map((p) => p.id)).toEqual(["ashish"]);
     expect(d.approvedBy.map((p) => p.id)).toEqual(["nia"]);
     expect(d.rejected.find((x) => x.id === "mysql")?.reason).toMatch(/BLOB/);
     expect(d.reasons.map((x) => x.id).sort()).toEqual(["R-07-1", "R-07-2", "R-07-3"]);

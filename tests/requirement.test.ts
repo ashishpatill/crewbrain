@@ -17,7 +17,7 @@ afterAll(async () => {
 describe("requirement pipeline", () => {
   it("answers a recorded decision question", async () => {
     const before = (await listTasks(acme)).length;
-    const res = await runRequirement(acme, { text: "Why did we choose Amazon S3 over MySQL for media storage?", actor: "omar" });
+    const res = await runRequirement(acme, { text: "Why did we choose Amazon S3 over MySQL for media storage?", actor: "ashish" });
     expect(res.outcome).toBe("answered");
     expect(res.ask?.decision?.id).toBe("D-07");
     expect(res.ask?.citations?.length).toBeGreaterThan(0);
@@ -26,10 +26,10 @@ describe("requirement pipeline", () => {
   });
 
   it("creates and claims a task for an action requirement", async () => {
-    const doc = await ingestDocument(acme, { text: "Unrelated memory note about quarterly planning.", title: "note.md", kind: "doc", author: "omar" });
+    const doc = await ingestDocument(acme, { text: "Unrelated memory note about quarterly planning.", title: "note.md", kind: "doc", author: "ashish" });
     const proposalId = doc.proposalId!;
     const reqText = "Execute the flibberwock migration to production immediately";
-    const res = await runRequirement(acme, { text: reqText, actor: "omar" });
+    const res = await runRequirement(acme, { text: reqText, actor: "ashish" });
     expect(res.outcome).toBe("task_claimed");
     expect(res.task?.status).toBe("claimed");
     const keys = res.stages.map((s) => s.key);

@@ -44,7 +44,7 @@ export default function StartPage() {
       const res = await fetch("/api/requirement", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify({ tenant, text: value, actor: "omar" }),
+        body: JSON.stringify({ tenant, text: value, actor: "ashish" }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || res.statusText);

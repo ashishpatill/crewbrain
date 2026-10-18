@@ -19,7 +19,7 @@
       "id": "researcher",
       "model": "groq/gpt-oss-20b",
       "name": "researcher",
-      "operator": "omar",
+      "operator": "ashish",
       "projects": [
         "storefront"
       ],
@@ -30,7 +30,7 @@
       "id": "coder",
       "model": "groq/gpt-oss-20b",
       "name": "coder",
-      "operator": "omar",
+      "operator": "ashish",
       "projects": [
         "storefront",
         "orders"
@@ -42,7 +42,7 @@
       "id": "reviewer",
       "model": "groq/gpt-oss-120b",
       "name": "reviewer",
-      "operator": "omar",
+      "operator": "ashish",
       "projects": [
         "storefront",
         "orders"
@@ -60,7 +60,7 @@
         "mysql"
       ],
       "decided_at": "2026-06-09T12:00:00+05:30",
-      "decided_by": "omar",
+      "decided_by": "ashish",
       "id": "D-01",
       "project": "orders",
       "reasons": [
@@ -114,7 +114,7 @@
         "vercel"
       ],
       "decided_at": "2026-06-11T16:05:00+05:30",
-      "decided_by": "omar",
+      "decided_by": "ashish",
       "id": "D-02",
       "project": "launch",
       "reasons": [
@@ -156,7 +156,7 @@
         "cloudinary"
       ],
       "decided_at": "2026-07-03T15:00:00+05:30",
-      "decided_by": "omar",
+      "decided_by": "ashish",
       "id": "D-03",
       "project": "storefront",
       "reasons": [
@@ -376,7 +376,7 @@
         "s3"
       ],
       "decided_at": "2026-08-12T10:02:00+05:30",
-      "decided_by": "omar",
+      "decided_by": "ashish",
       "id": "D-07",
       "project": "storefront",
       "reasons": [
@@ -440,7 +440,7 @@
         "cloudfront"
       ],
       "decided_at": "2026-08-12T15:30:00+05:30",
-      "decided_by": "omar",
+      "decided_by": "ashish",
       "id": "D-08",
       "project": "storefront",
       "reasons": [
@@ -499,7 +499,7 @@
         "mysql"
       ],
       "decided_at": "2026-09-29T11:00:00+05:30",
-      "decided_by": "omar",
+      "decided_by": "ashish",
       "id": "D-10",
       "project": "launch",
       "reasons": [
@@ -529,7 +529,7 @@
       "id": "mysql",
       "kind": "tech",
       "name": "MySQL",
-      "owner": "omar"
+      "owner": "ashish"
     },
     {
       "aliases": [
@@ -550,7 +550,7 @@
       "id": "s3",
       "kind": "vendor",
       "name": "Amazon S3",
-      "owner": "omar"
+      "owner": "ashish"
     },
     {
       "aliases": [
@@ -690,9 +690,9 @@
       "role": "Founder"
     },
     {
-      "handle": "@omar",
-      "id": "omar",
-      "name": "Omar",
+      "handle": "@ashish",
+      "id": "ashish",
+      "name": "Ashish",
       "role": "Platform lead"
     },
     {
@@ -718,7 +718,7 @@
     {
       "id": "storefront",
       "name": "Storefront",
-      "owner": "omar",
+      "owner": "ashish",
       "status": "active",
       "uses": [
         "mysql",
@@ -762,7 +762,7 @@
     {
       "id": "platform",
       "members": [
-        "omar"
+        "ashish"
       ],
       "name": "Platform",
       "owns": [

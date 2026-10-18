@@ -19,7 +19,7 @@ describe("Acme corpus", () => {
   });
 
   it("alias matching prefers the longest alias", () => {
-    expect(findMentions("Omar is reading about React Native with Expo", seed.entities)).toEqual(["react-native"]);
+    expect(findMentions("Ashish is reading about React Native with Expo", seed.entities)).toEqual(["react-native"]);
     expect(findMentions("MySQL and S3", seed.entities).sort()).toEqual(["mysql", "s3"]);
     expect(findMentions("export the expo build", seed.entities)).toEqual(["react-native"]);
   });

@@ -9,7 +9,7 @@ export default function IngestPage() {
   const [tenant] = useTenant();
   const [title, setTitle] = useState("");
   const [kind, setKind] = useState("chat");
-  const [author, setAuthor] = useState("omar");
+  const [author, setAuthor] = useState("ashish");
   const [text, setText] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);

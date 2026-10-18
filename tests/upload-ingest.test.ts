@@ -34,7 +34,7 @@ describe("ingest document knowledge base", () => {
   it("persists Source + Passages and creates a proposal", async () => {
     const title = "zorblax-quillfruit-notes.md";
     const text = "Zorblax quillfruit notes: the Zorblax adapter uses quillfruit seeds for indexing.";
-    const res = await ingestDocument(acme, { text, title, kind: "doc", author: "omar" });
+    const res = await ingestDocument(acme, { text, title, kind: "doc", author: "ashish" });
     expect(res.proposalId).toBeTruthy();
     const passages = await acme.ro<{ id: string; text: string }>(
       "MATCH (p:Passage)-[:PART_OF]->(s:Source {title: $t}) RETURN p.id AS id, p.text AS text",
